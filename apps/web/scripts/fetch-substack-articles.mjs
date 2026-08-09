@@ -1,4 +1,4 @@
-import { access, mkdir, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import usernames from "../src/constants/usernames.json" with { type: "json" };
@@ -120,6 +120,24 @@ async function pathExists(filePath) {
   try {
     await access(filePath);
     return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Returns whether the existing generated articles file has at least one entry.
+ * @param {string} filePath Absolute path to the generated JSON file.
+ * @returns {Promise<boolean>}
+ */
+async function hasNonEmptyArticlesFile(filePath) {
+  if (!(await pathExists(filePath))) {
+    return false;
+  }
+
+  try {
+    const parsed = JSON.parse(await readFile(filePath, "utf8"));
+    return Array.isArray(parsed) && parsed.length > 0;
   } catch {
     return false;
   }
@@ -260,6 +278,10 @@ async function main() {
   const posts = await fetchSubstackPosts(username);
   const articles = assertArticles(toArticles(posts));
 
+  if (articles.length === 0) {
+    throw new Error(`No newsletter articles found for ${username}`);
+  }
+
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");
 
@@ -271,7 +293,7 @@ async function main() {
 main().catch(async (error) => {
   const message = error instanceof Error ? error.message : error;
 
-  if (await pathExists(outputPath)) {
+  if (await hasNonEmptyArticlesFile(outputPath)) {
     console.warn(
       `Substack articles fetch failed; keeping existing ${outputPath}`,
     );
