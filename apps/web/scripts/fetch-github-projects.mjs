@@ -1,9 +1,9 @@
 import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import usernames from "../src/constants/usernames.json" with { type: "json" };
 import { assertProjects } from "./lib/assert-generated-data.mjs";
 
-const DEFAULT_USERNAME = "deangrant";
 const FETCH_TIMEOUT_MS = 15_000;
 const MAX_PROJECTS = 12;
 
@@ -234,7 +234,7 @@ function toProjects(repos) {
 }
 
 async function main() {
-  const username = process.env.GITHUB_USERNAME ?? DEFAULT_USERNAME;
+  const username = process.env.GITHUB_USERNAME ?? usernames.github;
   const repos = await fetchGithubRepos(username);
   const projects = assertProjects(toProjects(repos));
 

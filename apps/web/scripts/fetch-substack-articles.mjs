@@ -1,9 +1,9 @@
 import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import usernames from "../src/constants/usernames.json" with { type: "json" };
 import { assertArticles } from "./lib/assert-generated-data.mjs";
 
-const DEFAULT_USERNAME = "deangrant";
 const FETCH_TIMEOUT_MS = 15_000;
 const MAX_ARTICLES = 50;
 const PAGE_SIZE = 50;
@@ -256,7 +256,7 @@ function toArticles(posts) {
 }
 
 async function main() {
-  const username = process.env.SUBSTACK_USERNAME ?? DEFAULT_USERNAME;
+  const username = process.env.SUBSTACK_USERNAME ?? usernames.substack;
   const posts = await fetchSubstackPosts(username);
   const articles = assertArticles(toArticles(posts));
 
