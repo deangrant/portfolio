@@ -118,18 +118,6 @@
     "updatedAt": "2026-08-02T09:51:54Z"
   },
   {
-    "createdAt": "2026-01-17T05:52:47Z",
-    "description": "A collection of reusable, parameterized scale rule templates for Azure Container Apps.",
-    "href": "https://github.com/deangrant/az-container-app-scale-rules",
-    "title": "az-container-app-scale-rules",
-    "topics": [
-      "azure",
-      "container-apps",
-      "scale"
-    ],
-    "updatedAt": "2026-01-17T06:19:13Z"
-  },
-  {
     "createdAt": "2025-06-06T04:56:08Z",
     "description": "A standardized email and phone number normalization and hashing utility that follows UID2 specifications for email address and phone number processing. This tool ensures consistent normalization and hash generation for identity resolution and data matching purposes.",
     "href": "https://github.com/deangrant/dii-operator",

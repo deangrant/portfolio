@@ -20,6 +20,7 @@ const outputPath = path.resolve(
  *   audience?: string;
  *   canonical_url?: string;
  *   description?: string | null;
+ *   is_published?: boolean;
  *   post_date?: string;
  *   slug?: string;
  *   subtitle?: string | null;
@@ -40,7 +41,7 @@ const outputPath = path.resolve(
  */
 
 /**
- * Builds request headers for the Substack archive API.
+ * Builds request headers for the Substack posts API.
  * @returns {HeadersInit}
  */
 function createSubstackHeaders() {
@@ -60,22 +61,22 @@ function isRecord(value) {
 }
 
 /**
- * Validates one Substack archive page payload.
+ * Validates one Substack posts page payload.
  * @param {unknown} data Candidate API JSON body.
- * @param {number} offset Archive page offset for error messages.
+ * @param {number} offset Posts page offset for error messages.
  * @returns {SubstackPost[]}
  */
 function assertSubstackPosts(data, offset) {
   if (!Array.isArray(data)) {
     throw new Error(
-      `Substack archive response at offset ${offset} must be an array`,
+      `Substack posts response at offset ${offset} must be an array`,
     );
   }
 
   return data.map((entry, index) => {
     if (!isRecord(entry)) {
       throw new Error(
-        `Substack archive response at offset ${offset}[${index}] must be an object`,
+        `Substack posts response at offset ${offset}[${index}] must be an object`,
       );
     }
 
@@ -84,14 +85,13 @@ function assertSubstackPosts(data, offset) {
 }
 
 /**
- * Fetches one page of published archive posts for a Substack publication.
+ * Fetches one page of posts for a Substack publication.
  * @param {string} username Publication subdomain / username.
- * @param {number} offset Archive page offset.
+ * @param {number} offset Posts page offset.
  * @returns {Promise<SubstackPost[]>}
  */
-async function fetchArchivePage(username, offset) {
-  const url = new URL(`https://${username}.substack.com/api/v1/archive`);
-  url.searchParams.set("sort", "new");
+async function fetchPostsPage(username, offset) {
+  const url = new URL(`https://${username}.substack.com/api/v1/posts`);
   url.searchParams.set("limit", String(PAGE_SIZE));
   url.searchParams.set("offset", String(offset));
 
@@ -104,7 +104,7 @@ async function fetchArchivePage(username, offset) {
   if (!response.ok) {
     const body = await response.text();
     throw new Error(
-      `Substack archive request failed (${response.status} ${response.statusText}): ${body}`,
+      `Substack posts request failed (${response.status} ${response.statusText}): ${body}`,
     );
   }
 
@@ -154,7 +154,7 @@ async function fetchSubstackPosts(username) {
   let offset = 0;
 
   while (posts.length < MAX_ARTICLES) {
-    const page = await fetchArchivePage(username, offset);
+    const page = await fetchPostsPage(username, offset);
 
     if (page.length === 0) {
       break;
@@ -207,7 +207,7 @@ function toReadTime(wordcount) {
 
 /**
  * Picks the best available summary string for a post.
- * @param {SubstackPost} post Archive post payload.
+ * @param {SubstackPost} post Posts API payload.
  * @returns {string}
  */
 function toSummary(post) {
@@ -227,8 +227,8 @@ function toSummary(post) {
 }
 
 /**
- * Maps a Substack archive post into the portfolio Article shape.
- * @param {SubstackPost} post Archive post payload.
+ * Maps a Substack post into the portfolio Article shape.
+ * @param {SubstackPost} post Posts API payload.
  * @returns {Article | null}
  */
 function mapSubstackPostToArticle(post) {
@@ -250,8 +250,8 @@ function mapSubstackPostToArticle(post) {
 }
 
 /**
- * Filters newsletter posts and maps them for the writing section.
- * @param {SubstackPost[]} posts Raw archive posts.
+ * Filters published newsletter posts and maps them for the writing section.
+ * @param {SubstackPost[]} posts Raw posts API payloads.
  * @returns {Article[]}
  */
 function toArticles(posts) {
@@ -260,6 +260,10 @@ function toArticles(posts) {
 
   for (const post of posts) {
     if (post.type !== "newsletter") {
+      continue;
+    }
+
+    if (post.is_published === false) {
       continue;
     }
 
