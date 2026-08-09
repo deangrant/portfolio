@@ -1,0 +1,23 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-fg);
+  transition:
+    var(--transition-theme),
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.toggle:hover {
+  background-color: var(--color-hover);
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+}

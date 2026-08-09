@@ -1,0 +1,19 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  animation: fade-up 420ms ease both;
+}
+
+.name {
+  font-size: clamp(2.25rem, 6vw, 3rem);
+  font-weight: 560;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.tagline {
+  max-width: 36rem;
+  color: var(--color-muted);
+  font-size: 1.0625rem;
+}
