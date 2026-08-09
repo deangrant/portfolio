@@ -90,5 +90,5 @@ export const PORTFOLIO: PortfolioContent = {
     },
   ],
   tagline:
-    "Software Engineer & Writer. Building open-source tools and writing about tech, design, and code.",
+    "For years I’ve enjoyed digging into complex infrastructure and data challenges. Now I’m putting that experience into building geospatial intelligence platforms designed to deliver clearer decisions from global-scale data.",
 };
