@@ -1,6 +1,7 @@
 import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertProjects } from "./lib/assert-generated-data.mjs";
 
 const DEFAULT_USERNAME = "deangrant";
 const FETCH_TIMEOUT_MS = 15_000;
@@ -60,6 +61,71 @@ function createGithubHeaders() {
 }
 
 /**
+ * Returns whether a value is a non-null object record.
+ * @param {unknown} value Candidate value.
+ * @returns {value is Record<string, unknown>}
+ */
+function isRecord(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+/**
+ * Asserts one GitHub repository payload used by the project mapper.
+ * @param {unknown} value Candidate repository payload.
+ * @param {number} index Array index for error messages.
+ * @returns {GithubRepo}
+ */
+function assertGithubRepo(value, index) {
+  const label = `repos[${index}]`;
+
+  if (!isRecord(value)) {
+    throw new Error(`${label} must be an object`);
+  }
+
+  for (const field of ["archived", "fork", "private"]) {
+    if (typeof value[field] !== "boolean") {
+      throw new Error(`${label}.${field} must be a boolean`);
+    }
+  }
+
+  for (const field of ["created_at", "html_url", "name", "pushed_at"]) {
+    if (typeof value[field] !== "string" || value[field].length === 0) {
+      throw new Error(`${label}.${field} must be a non-empty string`);
+    }
+  }
+
+  if (value.description !== null && typeof value.description !== "string") {
+    throw new Error(`${label}.description must be a string or null`);
+  }
+
+  if (value.topics !== undefined) {
+    if (
+      !Array.isArray(value.topics) ||
+      value.topics.some((topic) => typeof topic !== "string")
+    ) {
+      throw new Error(
+        `${label}.topics must be an array of strings when present`,
+      );
+    }
+  }
+
+  return /** @type {GithubRepo} */ (value);
+}
+
+/**
+ * Validates the GitHub repositories API payload.
+ * @param {unknown} data Candidate API JSON body.
+ * @returns {GithubRepo[]}
+ */
+function assertGithubRepos(data) {
+  if (!Array.isArray(data)) {
+    throw new Error("GitHub repositories response must be an array");
+  }
+
+  return data.map((entry, index) => assertGithubRepo(entry, index));
+}
+
+/**
  * Fetches public owner repositories for a GitHub user.
  * @param {string} username GitHub login.
  * @returns {Promise<GithubRepo[]>}
@@ -83,7 +149,7 @@ async function fetchGithubRepos(username) {
     );
   }
 
-  return /** @type {GithubRepo[]} */ (await response.json());
+  return assertGithubRepos(await response.json());
 }
 
 /**
@@ -170,7 +236,7 @@ function toProjects(repos) {
 async function main() {
   const username = process.env.GITHUB_USERNAME ?? DEFAULT_USERNAME;
   const repos = await fetchGithubRepos(username);
-  const projects = toProjects(repos);
+  const projects = assertProjects(toProjects(repos));
 
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(projects, null, 2)}\n`, "utf8");

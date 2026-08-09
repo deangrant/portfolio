@@ -1,6 +1,7 @@
 import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertArticles } from "./lib/assert-generated-data.mjs";
 
 const DEFAULT_USERNAME = "deangrant";
 const FETCH_TIMEOUT_MS = 15_000;
@@ -50,6 +51,39 @@ function createSubstackHeaders() {
 }
 
 /**
+ * Returns whether a value is a non-null object record.
+ * @param {unknown} value Candidate value.
+ * @returns {value is Record<string, unknown>}
+ */
+function isRecord(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+/**
+ * Validates one Substack archive page payload.
+ * @param {unknown} data Candidate API JSON body.
+ * @param {number} offset Archive page offset for error messages.
+ * @returns {SubstackPost[]}
+ */
+function assertSubstackPosts(data, offset) {
+  if (!Array.isArray(data)) {
+    throw new Error(
+      `Substack archive response at offset ${offset} must be an array`,
+    );
+  }
+
+  return data.map((entry, index) => {
+    if (!isRecord(entry)) {
+      throw new Error(
+        `Substack archive response at offset ${offset}[${index}] must be an object`,
+      );
+    }
+
+    return /** @type {SubstackPost} */ (entry);
+  });
+}
+
+/**
  * Fetches one page of published archive posts for a Substack publication.
  * @param {string} username Publication subdomain / username.
  * @param {number} offset Archive page offset.
@@ -74,7 +108,7 @@ async function fetchArchivePage(username, offset) {
     );
   }
 
-  return /** @type {SubstackPost[]} */ (await response.json());
+  return assertSubstackPosts(await response.json(), offset);
 }
 
 /**
@@ -224,7 +258,7 @@ function toArticles(posts) {
 async function main() {
   const username = process.env.SUBSTACK_USERNAME ?? DEFAULT_USERNAME;
   const posts = await fetchSubstackPosts(username);
-  const articles = toArticles(posts);
+  const articles = assertArticles(toArticles(posts));
 
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(articles, null, 2)}\n`, "utf8");

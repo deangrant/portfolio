@@ -1,7 +1,10 @@
 import { PORTFOLIO } from "@/constants/portfolio.constants";
 import githubProjects from "@/data/github-projects.generated.json";
 import substackArticles from "@/data/substack-articles.generated.json";
-import type { Article, Project } from "@/types/portfolio.types";
+import {
+  parseArticles,
+  parseProjects,
+} from "@/utils/parseGeneratedPortfolioData";
 import { ArticlesSection } from "./components/ArticlesSection";
 import { HeroSection } from "./components/HeroSection";
 import { ProjectsSection } from "./components/ProjectsSection";
@@ -9,8 +12,8 @@ import { SiteFooter } from "./components/SiteFooter";
 import { SocialLinks } from "./components/SocialLinks";
 import styles from "./index.module.css";
 
-const projects = githubProjects as Project[];
-const articles = substackArticles as Article[];
+const projects = parseProjects(githubProjects);
+const articles = parseArticles(substackArticles);
 
 /**
  * Composes the single-page portfolio sections from static content and
