@@ -1,8 +1,9 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DEFAULT_USERNAME = "deangrant";
+const FETCH_TIMEOUT_MS = 15_000;
 const MAX_ARTICLES = 50;
 const PAGE_SIZE = 50;
 const WORDS_PER_MINUTE = 200;
@@ -63,6 +64,7 @@ async function fetchArchivePage(username, offset) {
   const response = await fetch(url, {
     headers: createSubstackHeaders(),
     redirect: "follow",
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   });
 
   if (!response.ok) {
@@ -73,6 +75,20 @@ async function fetchArchivePage(username, offset) {
   }
 
   return /** @type {SubstackPost[]} */ (await response.json());
+}
+
+/**
+ * Returns whether a path exists and is readable.
+ * @param {string} filePath Absolute path to check.
+ * @returns {Promise<boolean>}
+ */
+async function pathExists(filePath) {
+  try {
+    await access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -218,7 +234,17 @@ async function main() {
   );
 }
 
-main().catch((error) => {
-  console.error(error instanceof Error ? error.message : error);
+main().catch(async (error) => {
+  const message = error instanceof Error ? error.message : error;
+
+  if (await pathExists(outputPath)) {
+    console.warn(
+      `Substack articles fetch failed; keeping existing ${outputPath}`,
+    );
+    console.warn(message);
+    return;
+  }
+
+  console.error(message);
   process.exitCode = 1;
 });

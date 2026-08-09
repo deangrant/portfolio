@@ -1,8 +1,9 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DEFAULT_USERNAME = "deangrant";
+const FETCH_TIMEOUT_MS = 15_000;
 const MAX_PROJECTS = 12;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -70,7 +71,10 @@ async function fetchGithubRepos(username) {
   url.searchParams.set("direction", "desc");
   url.searchParams.set("per_page", "100");
 
-  const response = await fetch(url, { headers: createGithubHeaders() });
+  const response = await fetch(url, {
+    headers: createGithubHeaders(),
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+  });
 
   if (!response.ok) {
     const body = await response.text();
@@ -80,6 +84,20 @@ async function fetchGithubRepos(username) {
   }
 
   return /** @type {GithubRepo[]} */ (await response.json());
+}
+
+/**
+ * Returns whether a path exists and is readable.
+ * @param {string} filePath Absolute path to check.
+ * @returns {Promise<boolean>}
+ */
+async function pathExists(filePath) {
+  try {
+    await access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -162,7 +180,17 @@ async function main() {
   );
 }
 
-main().catch((error) => {
-  console.error(error instanceof Error ? error.message : error);
+main().catch(async (error) => {
+  const message = error instanceof Error ? error.message : error;
+
+  if (await pathExists(outputPath)) {
+    console.warn(
+      `GitHub projects fetch failed; keeping existing ${outputPath}`,
+    );
+    console.warn(message);
+    return;
+  }
+
+  console.error(message);
   process.exitCode = 1;
 });
