@@ -24,7 +24,7 @@ export function HomePage() {
     <div className={styles.page}>
       <HeroSection name={PORTFOLIO.name} tagline={PORTFOLIO.tagline} />
       <SocialLinks links={PORTFOLIO.socialLinks} />
-      <ProjectsSection projects={projects} />
+      {projects.length > 0 ? <ProjectsSection projects={projects} /> : null}
       {articles.length > 0 ? <ArticlesSection articles={articles} /> : null}
       <SiteFooter name={PORTFOLIO.name} />
     </div>

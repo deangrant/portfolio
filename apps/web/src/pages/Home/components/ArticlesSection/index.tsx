@@ -3,6 +3,7 @@ import { ArticleItem } from "@/pages/Home/components/ArticleItem";
 import styles from "./index.module.css";
 import type { ArticlesSectionProps } from "./index.types";
 
+const LIST_ID = "writing-articles-list";
 const VISIBLE_ARTICLE_COUNT = 3;
 
 /**
@@ -20,13 +21,14 @@ export function ArticlesSection({ articles }: ArticlesSectionProps) {
       <h2 className={styles.title} id="writing-heading">
         Writing
       </h2>
-      <ul className={styles.list}>
+      <ul className={styles.list} id={LIST_ID}>
         {visibleArticles.map((article) => (
           <ArticleItem article={article} key={article.href} />
         ))}
       </ul>
       {hasMore ? (
         <button
+          aria-controls={LIST_ID}
           aria-expanded={isExpanded}
           className={styles.toggle}
           onClick={() => {
