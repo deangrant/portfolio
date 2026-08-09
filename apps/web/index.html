@@ -8,6 +8,15 @@
       name="description"
     />
     <title>Dean Grant</title>
+    <!-- Key must match THEME_STORAGE_KEY in src/constants/theme.constants.ts -->
+    <script>
+      try {
+        var theme = localStorage.getItem("portfolio-theme");
+        if (theme === "light" || theme === "dark") {
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
