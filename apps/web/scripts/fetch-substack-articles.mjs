@@ -102,9 +102,8 @@ async function fetchPostsPage(username, offset) {
   });
 
   if (!response.ok) {
-    const body = await response.text();
     throw new Error(
-      `Substack posts request failed (${response.status} ${response.statusText}): ${body}`,
+      `Substack posts request failed (${response.status} ${response.statusText})`,
     );
   }
 

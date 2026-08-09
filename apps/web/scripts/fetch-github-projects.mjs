@@ -162,9 +162,8 @@ async function fetchGithubReposPage(username, page) {
   });
 
   if (!response.ok) {
-    const body = await response.text();
     throw new Error(
-      `GitHub API request failed (${response.status} ${response.statusText}): ${body}`,
+      `GitHub API request failed (${response.status} ${response.statusText})`,
     );
   }
 
