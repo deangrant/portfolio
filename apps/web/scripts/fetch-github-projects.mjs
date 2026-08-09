@@ -253,6 +253,16 @@ function mapGithubRepoToProject(repo) {
 }
 
 /**
+ * Parses a date string to a finite timestamp for sorting.
+ * @param {string} value Candidate ISO date string.
+ * @returns {number} Parsed time, or `-Infinity` when the value is not a valid date.
+ */
+function toTimestamp(value) {
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? Number.NEGATIVE_INFINITY : parsed;
+}
+
+/**
  * Filters, sorts by newest created, and maps repositories for the carousel.
  * @param {GithubRepo[]} repos Raw GitHub repositories.
  * @returns {Project[]}
@@ -260,10 +270,16 @@ function mapGithubRepoToProject(repo) {
 function toProjects(repos) {
   return repos
     .filter(isEligibleRepo)
-    .sort(
-      (left, right) =>
-        Date.parse(right.created_at) - Date.parse(left.created_at),
-    )
+    .sort((left, right) => {
+      const delta =
+        toTimestamp(right.created_at) - toTimestamp(left.created_at);
+
+      if (delta !== 0) {
+        return delta;
+      }
+
+      return left.name.localeCompare(right.name);
+    })
     .slice(0, MAX_PROJECTS)
     .map(mapGithubRepoToProject);
 }
