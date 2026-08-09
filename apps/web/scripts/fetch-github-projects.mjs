@@ -1,8 +1,8 @@
 import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import usernames from "../src/constants/usernames.json" with { type: "json" };
-import { assertProjects } from "./lib/assert-generated-data.mjs";
+import usernames from "../src/assets/usernames.json" with { type: "json" };
+import { assertProjects } from "../src/utils/assertGeneratedPortfolioData.mjs";
 
 const FETCH_TIMEOUT_MS = 15_000;
 const MAX_PAGES = 10;
@@ -12,7 +12,7 @@ const PER_PAGE = 100;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputPath = path.resolve(
   __dirname,
-  "../src/data/github-projects.generated.json",
+  "../src/assets/data/github-projects.generated.json",
 );
 
 /**

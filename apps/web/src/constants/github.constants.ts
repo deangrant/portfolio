@@ -1,6 +1,6 @@
-import usernames from "./usernames.json";
+import usernames from "@/assets/usernames.json";
 
 /**
- * GitHub account used when generating the projects carousel at build time.
+ * GitHub account used for social links and build-time project fetching.
  */
 export const GITHUB_USERNAME = usernames.github;

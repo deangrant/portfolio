@@ -1,6 +1,6 @@
+import githubProjects from "@/assets/data/github-projects.generated.json";
+import substackArticles from "@/assets/data/substack-articles.generated.json";
 import { PORTFOLIO } from "@/constants/portfolio.constants";
-import githubProjects from "@/data/github-projects.generated.json";
-import substackArticles from "@/data/substack-articles.generated.json";
 import {
   parseArticles,
   parseProjects,

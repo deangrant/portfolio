@@ -9,7 +9,7 @@ import type { PortfolioContent } from "@/types/portfolio.types";
  * when publishing.
  *
  * Projects and articles are generated at build time into
- * `src/data/*.generated.json`.
+ * `src/assets/data/*.generated.json`.
  */
 export const PORTFOLIO: PortfolioContent = {
   name: "Dean Grant",

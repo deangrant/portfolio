@@ -15,13 +15,11 @@ export interface ThemeStorage {
   /**
    * Returns the stored theme, or `null` when none is stored or the value is
    * invalid.
-   * @returns The persisted theme, or `null`.
    */
   get(): Theme | null;
 
   /**
    * Persists the preferred theme for later visits.
-   * @param theme Theme value to store.
    */
   set(theme: Theme): void;
 }
@@ -32,7 +30,6 @@ export interface ThemeStorage {
 export interface ThemeApplicator {
   /**
    * Writes the theme into the document for CSS variable switching.
-   * @param theme Theme to apply.
    */
   apply(theme: Theme): void;
 }

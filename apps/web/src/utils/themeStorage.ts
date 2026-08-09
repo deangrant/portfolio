@@ -25,7 +25,7 @@ function getBrowserLocalStorage(): Storage | null {
 /**
  * Creates a `ThemeStorage` adapter backed by the browser `localStorage` API.
  * @param storage Optional web storage implementation; falls back to
- * `window.localStorage` when called in a browser.
+ *     `window.localStorage` when called in a browser.
  * @returns Theme storage adapter for the theme provider.
  */
 export function createLocalThemeStorage(storage?: Storage): ThemeStorage {

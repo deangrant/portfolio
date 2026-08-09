@@ -1,4 +1,4 @@
-import usernames from "./usernames.json";
+import usernames from "@/assets/usernames.json";
 
 /**
  * LinkedIn profile slug used in the social links row.

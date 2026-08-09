@@ -1,19 +1,27 @@
-import { useState } from "react";
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { HomePage } from "@/pages/Home";
-import { createDocumentThemeApplicator } from "@/utils/themeApplicator";
-import { createLocalThemeStorage } from "@/utils/themeStorage";
+import type { ThemeApplicator, ThemeStorage } from "@/types/theme.types";
 
 /**
- * Root application composition: theme provider, layout, and home page.
+ * Props for the root application shell.
  */
-export function App() {
-  const [{ applicator, storage }] = useState(() => ({
-    applicator: createDocumentThemeApplicator(),
-    storage: createLocalThemeStorage(),
-  }));
+export type AppProps = {
+  /**
+   * Applies the active theme to the host document.
+   */
+  applicator: ThemeApplicator;
 
+  /**
+   * Persists and restores the preferred theme.
+   */
+  storage: ThemeStorage;
+};
+
+/**
+ * Composes the theme provider, main layout, and home page.
+ */
+export function App({ applicator, storage }: AppProps) {
   return (
     <ThemeProvider applicator={applicator} storage={storage}>
       <MainLayout>

@@ -4,7 +4,6 @@ import { ThemeContext } from "@/contexts/ThemeContext/themeContext";
 
 /**
  * Returns the active theme and toggle action from `ThemeProvider`.
- * @returns Narrow theme context value.
  * @throws When called outside a `ThemeProvider`.
  */
 export function useTheme(): ThemeContextValue {

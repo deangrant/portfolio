@@ -11,11 +11,11 @@
     <!-- Key must match THEME_STORAGE_KEY in src/constants/theme.constants.ts -->
     <script>
       try {
-        var theme = localStorage.getItem("portfolio-theme");
+        const theme = localStorage.getItem("portfolio-theme");
         if (theme === "light" || theme === "dark") {
           document.documentElement.setAttribute("data-theme", theme);
         }
-      } catch (e) {}
+      } catch {}
     </script>
   </head>
   <body>

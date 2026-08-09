@@ -2,7 +2,7 @@ import styles from "./index.module.css";
 import type { ThemeToggleProps } from "./index.types";
 
 /**
- * Presentational button that requests a theme switch via props.
+ * Renders a presentational button that requests a theme switch via props.
  */
 export function ThemeToggle({ className, onToggle, theme }: ThemeToggleProps) {
   const nextLabel =

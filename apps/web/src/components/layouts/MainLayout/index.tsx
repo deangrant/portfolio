@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import type { MainLayoutProps } from "./index.types";
 
 /**
- * Page shell with theme control and a centered content column.
+ * Renders the page shell with theme control and a centered content column.
  */
 export function MainLayout({ children }: MainLayoutProps) {
   const { theme, toggleTheme } = useTheme();

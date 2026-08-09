@@ -1,8 +1,8 @@
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import usernames from "../src/constants/usernames.json" with { type: "json" };
-import { assertArticles } from "./lib/assert-generated-data.mjs";
+import usernames from "../src/assets/usernames.json" with { type: "json" };
+import { assertArticles } from "../src/utils/assertGeneratedPortfolioData.mjs";
 
 const FETCH_TIMEOUT_MS = 15_000;
 const MAX_ARTICLES = 50;
@@ -12,7 +12,7 @@ const WORDS_PER_MINUTE = 200;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputPath = path.resolve(
   __dirname,
-  "../src/data/substack-articles.generated.json",
+  "../src/assets/data/substack-articles.generated.json",
 );
 
 /**
