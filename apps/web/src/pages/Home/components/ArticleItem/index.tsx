@@ -19,8 +19,6 @@ function formatPublishedDate(isoDate: string): string {
 
 /**
  * Renders one featured Substack article in the writing list.
- * @param props Article content for the row.
- * @returns Article list item.
  */
 export function ArticleItem({ article }: ArticleItemProps) {
   return (

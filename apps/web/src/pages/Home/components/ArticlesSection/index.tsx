@@ -4,8 +4,6 @@ import type { ArticlesSectionProps } from "./index.types";
 
 /**
  * Renders the featured Substack writing list.
- * @param props Articles from portfolio constants.
- * @returns Writing section element.
  */
 export function ArticlesSection({ articles }: ArticlesSectionProps) {
   return (

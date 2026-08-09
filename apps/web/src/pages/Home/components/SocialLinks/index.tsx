@@ -4,7 +4,7 @@ import type { SocialLinksProps } from "./index.types";
 
 /**
  * Returns an inline SVG icon for a social channel.
- * @param channel Channel whose icon should be rendered.
+ * @param props Channel whose icon should be rendered.
  * @returns Icon element for the channel.
  */
 function SocialIcon({ channel }: { channel: SocialChannel }) {
@@ -64,8 +64,6 @@ function SocialIcon({ channel }: { channel: SocialChannel }) {
 
 /**
  * Renders a scannable row of social and contact links.
- * @param props Link data from portfolio constants.
- * @returns Social links navigation list.
  */
 export function SocialLinks({ links }: SocialLinksProps) {
   return (

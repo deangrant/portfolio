@@ -1,14 +1,10 @@
-import { useTheme } from "@/hooks/useTheme";
 import styles from "./index.module.css";
 import type { ThemeToggleProps } from "./index.types";
 
 /**
- * Button that switches the site between dark and light themes.
- * @param props Optional class name for layout placement.
- * @returns Accessible theme toggle control.
+ * Presentational button that requests a theme switch via props.
  */
-export function ThemeToggle({ className }: ThemeToggleProps) {
-  const { theme, toggleTheme } = useTheme();
+export function ThemeToggle({ className, onToggle, theme }: ThemeToggleProps) {
   const nextLabel =
     theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
 
@@ -20,7 +16,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
           ? styles.toggle
           : `${styles.toggle} ${className}`
       }
-      onClick={toggleTheme}
+      onClick={onToggle}
       title={nextLabel}
       type="button"
     >

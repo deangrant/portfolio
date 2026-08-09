@@ -3,8 +3,6 @@ import type { ProjectCardProps } from "./index.types";
 
 /**
  * Renders a minimal project summary with tech tags and a repository link.
- * @param props Project content for the card.
- * @returns Project card article.
  */
 export function ProjectCard({ project }: ProjectCardProps) {
   return (

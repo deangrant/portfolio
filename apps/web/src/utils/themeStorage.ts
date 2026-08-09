@@ -1,4 +1,4 @@
-import { THEME_STORAGE_KEY } from "@/constants/portfolio.constants";
+import { THEME_STORAGE_KEY } from "@/constants/theme.constants";
 import type { Theme, ThemeStorage } from "@/types/theme.types";
 
 /**

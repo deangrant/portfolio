@@ -1,9 +1,10 @@
 /**
  * Props for the hero / about block.
- * @property name Display name shown as the primary heading.
- * @property tagline Short bio under the name.
  */
 export interface HeroSectionProps {
+  /** Display name shown as the primary heading. */
   name: string;
+
+  /** Short bio under the name. */
   tagline: string;
 }

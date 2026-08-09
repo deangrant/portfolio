@@ -92,13 +92,3 @@ export const PORTFOLIO: PortfolioContent = {
   tagline:
     "Software Engineer & Writer. Building open-source tools and writing about tech, design, and code.",
 };
-
-/**
- * Storage key used by the theme persistence adapter.
- */
-export const THEME_STORAGE_KEY = "portfolio-theme";
-
-/**
- * Theme applied when no stored preference exists.
- */
-export const DEFAULT_THEME = "dark" as const;

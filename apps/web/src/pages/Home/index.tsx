@@ -8,7 +8,6 @@ import styles from "./index.module.css";
 
 /**
  * Composes the single-page portfolio sections from static content.
- * @returns Home page content for the main landmark.
  */
 export function HomePage() {
   return (

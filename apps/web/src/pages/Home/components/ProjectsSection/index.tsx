@@ -4,8 +4,6 @@ import type { ProjectsSectionProps } from "./index.types";
 
 /**
  * Renders the selected GitHub projects grid.
- * @param props Projects from portfolio constants.
- * @returns Projects section element.
  */
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (

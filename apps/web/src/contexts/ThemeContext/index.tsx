@@ -1,40 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { DEFAULT_THEME } from "@/constants/portfolio.constants";
-import type { Theme, ThemeStorage } from "@/types/theme.types";
-import { createLocalThemeStorage } from "@/utils/themeStorage";
+import { DEFAULT_THEME } from "@/constants/theme.constants";
+import type { Theme } from "@/types/theme.types";
 import type { ThemeProviderProps } from "./index.types";
 import { ThemeContext } from "./themeContext";
 
-let defaultStorage: ThemeStorage | undefined;
-
 /**
- * Returns a shared localStorage-backed theme adapter, created once.
- * @returns Default theme storage implementation.
- */
-function getDefaultStorage(): ThemeStorage {
-  if (defaultStorage === undefined) {
-    defaultStorage = createLocalThemeStorage();
-  }
-
-  return defaultStorage;
-}
-
-/**
- * Applies a theme to the document root for CSS variable switching.
- * @param theme Theme to apply as `data-theme`.
- */
-function applyThemeToDocument(theme: Theme): void {
-  document.documentElement.setAttribute("data-theme", theme);
-}
-
-/**
- * Provides theme state, document attribute sync, and optional persistence.
- * @param props Provider configuration and children.
- * @returns Theme context provider element.
+ * Provides theme state and syncs it through injected applicator and storage.
  */
 export function ThemeProvider({
+  applicator,
   children,
-  storage = getDefaultStorage(),
+  storage,
   defaultTheme = DEFAULT_THEME,
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
@@ -42,9 +18,9 @@ export function ThemeProvider({
   });
 
   useEffect(() => {
-    applyThemeToDocument(theme);
+    applicator.apply(theme);
     storage.set(theme);
-  }, [storage, theme]);
+  }, [applicator, storage, theme]);
 
   const toggleTheme = useCallback(() => {
     setTheme((current) => (current === "dark" ? "light" : "dark"));

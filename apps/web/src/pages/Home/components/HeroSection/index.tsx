@@ -3,8 +3,6 @@ import type { HeroSectionProps } from "./index.types";
 
 /**
  * Renders the site name and bio tagline as the page hero.
- * @param props Name and tagline content.
- * @returns Hero header section.
  */
 export function HeroSection({ name, tagline }: HeroSectionProps) {
   return (

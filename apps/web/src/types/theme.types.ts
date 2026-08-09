@@ -1,5 +1,10 @@
 /**
  * Supported visual themes for the site.
+ *
+ * Valid values:
+ *
+ * - `dark`
+ * - `light`
  */
 export type Theme = "dark" | "light";
 
@@ -19,4 +24,15 @@ export interface ThemeStorage {
    * @param theme Theme value to store.
    */
   set(theme: Theme): void;
+}
+
+/**
+ * Applies the active theme to the host document (e.g. `data-theme`).
+ */
+export interface ThemeApplicator {
+  /**
+   * Writes the theme into the document for CSS variable switching.
+   * @param theme Theme to apply.
+   */
+  apply(theme: Theme): void;
 }
