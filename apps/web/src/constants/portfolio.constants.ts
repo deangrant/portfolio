@@ -1,4 +1,7 @@
 import { GITHUB_USERNAME } from "@/constants/github.constants";
+import { LINKEDIN_USERNAME } from "@/constants/linkedin.constants";
+import { SUBSTACK_USERNAME } from "@/constants/substack.constants";
+import { X_USERNAME } from "@/constants/x.constants";
 import type { PortfolioContent } from "@/types/portfolio.types";
 
 /**
@@ -44,17 +47,17 @@ export const PORTFOLIO: PortfolioContent = {
     },
     {
       channel: "linkedin",
-      href: "https://www.linkedin.com/in/example",
+      href: `https://www.linkedin.com/in/${LINKEDIN_USERNAME}`,
       label: "LinkedIn",
     },
     {
       channel: "substack",
-      href: "https://example.substack.com",
+      href: `https://substack.com/@${SUBSTACK_USERNAME}`,
       label: "Substack",
     },
     {
       channel: "x",
-      href: "https://x.com/example",
+      href: `https://x.com/${X_USERNAME}`,
       label: "X",
     },
     {
