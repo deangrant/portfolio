@@ -1,0 +1,13 @@
+---
+description: pnpm workspace and install policy for this monorepo
+alwaysApply: true
+---
+
+# pnpm workspace
+
+- Use **pnpm only** (Corepack). Never npm or yarn.
+- Respect `packageManager` (`pnpm@11.8.0`) and `engines.node` (`>=22`).
+- Prefer `catalog:` versions from `pnpm-workspace.yaml` for shared deps.
+- Install with frozen lockfile in CI (`pnpm install --frozen-lockfile` / `pnpm lint:lockfile`).
+- Do not weaken install policy (`allowBuilds`, `trustPolicyExclude`, etc.) without an explicit reason and review.
+- Workspace packages live under `apps/*` only.

@@ -1,0 +1,15 @@
+---
+description: apps/web folder layout and component conventions
+globs: apps/web/src/**/*.{ts,tsx,css}
+alwaysApply: false
+---
+
+# apps/web structure
+
+- Folder-per-component: `index.tsx`, `index.module.css`, `index.types.ts` as needed.
+- Import via `@/` direct paths. **No** `components/*/index.ts` layer barrels.
+- Shared leaf UI → `components/core/`; page shells → `components/layouts/`.
+- Page-only UI stays under `pages/<Page>/components/` until reused by 2+ pages.
+- Page-local hooks/helpers colocate with the page/section; shared hooks go in `src/hooks/`.
+- Do **not** scaffold empty `patterns/`, `containers/`, `routes/`, `services/`, `stores/`, or `i18n/`.
+- Follow `.agents/skills/typescript-project-structure` for deeper layout decisions.

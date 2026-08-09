@@ -1,0 +1,14 @@
+---
+description: Generated portfolio JSON and fetch scripts
+globs: apps/web/scripts/**/*,apps/web/src/assets/**/*,apps/web/src/utils/assertGeneratedPortfolioData.*,apps/web/src/utils/parseGeneratedPortfolioData.ts
+alwaysApply: false
+---
+
+# Generated portfolio data
+
+- Output paths: `apps/web/src/assets/data/*.generated.json`.
+- Usernames source of truth: `apps/web/src/assets/usernames.json` (re-exported via `*.constants.ts`).
+- **Do not hand-edit** generated JSON. Change fetch scripts, usernames, mappers, or asserts.
+- Shared validation: `assertGeneratedPortfolioData.mjs` (+ `.d.mts`); runtime uses `parseGeneratedPortfolioData.ts`.
+- Keep script asserts and runtime parse wrappers in sync when shapes change.
+- Soft-fail: if fetch fails and a prior non-empty file exists, scripts may keep it and exit 0.

@@ -91,6 +91,11 @@ path.
 Put page-only UI in `pages/<PageName>/components/`. Do not put that UI in
 `components/` until more than one page needs it.
 
+**Do not create empty unused folders.** Only add `patterns/`, `containers/`,
+`routes/`, `services/`, `stores/`, or `i18n/` when the app actually needs them.
+This portfolio app currently uses `core` and `layouts` under `components/`, plus
+page-local UI — leave the other layers out until reuse demands them.
+
 ---
 
 ## 4. Imports (no component-layer barrels)

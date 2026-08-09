@@ -1,74 +1,78 @@
-# pnpm-workspace
+# Portfolio
 
-A starter template for a **pnpm** monorepo with strict install policy, Biome formatting/linting, and GitHub Actions CI.
+Dean Grant’s personal portfolio — a Vite + React SPA in a pnpm monorepo.
 
-Use this repository as a base when you want a clean workspace scaffold instead of assembling pnpm, tooling, and supply-chain defaults from scratch.
+## What it is
+
+A single-page site with:
+
+- Hero name and tagline
+- Social and contact links
+- Horizontal carousel of selected GitHub projects
+- List of Substack articles
+- Dark / light theme (dark by default)
+
+Projects and articles are fetched at build time from GitHub and Substack into
+`apps/web/src/assets/data/*.generated.json`. The browser does not call those APIs
+at runtime.
 
 ## Requirements
 
 - Node.js `>=22`
 - [pnpm](https://pnpm.io/) `11.8.0` (pinned via `packageManager` in `package.json`)
 
-Enable Corepack so the pinned pnpm version is used:
-
 ```bash
 corepack enable
+pnpm install
 ```
 
-## Getting started
+## Quick start
 
-1. Create a new repository from this template (or clone it).
-2. Install dependencies:
+```bash
+pnpm dev
+```
 
-   ```bash
-   pnpm install
-   ```
+`predev` refreshes generated portfolio data, then starts the Vite dev server.
 
-3. Add workspace package locations in `pnpm-workspace.yaml` under `packages`, for example:
+Optional environment variables for the fetch scripts:
 
-   ```yaml
-   packages:
-     - "apps/*"
-     - "packages/*"
-   ```
-
-4. Create packages (each with its own `package.json`) under those directories.
-5. Rename the root `name` in `package.json` to match your project.
+| Variable | Purpose |
+| --- | --- |
+| `GITHUB_TOKEN` | Higher GitHub API rate limits |
+| `GITHUB_USERNAME` | Override GitHub username from `usernames.json` |
+| `SUBSTACK_USERNAME` | Override Substack username from `usernames.json` |
 
 ## Scripts
 
 | Script | Description |
 | --- | --- |
-| `pnpm check` | Run Biome check (format + lint) |
-| `pnpm check:fix` | Apply Biome check fixes |
-| `pnpm format` | Format with Biome |
-| `pnpm format:check` | Check formatting only |
-| `pnpm lint` | Lint with Biome |
-| `pnpm lint:fix` | Apply Biome lint fixes |
-| `pnpm lint:lockfile` | Verify the lockfile with `pnpm install --frozen-lockfile` |
+| `pnpm dev` | Fetch data + Vite dev server |
+| `pnpm build` | Fetch data + typecheck + production build |
+| `pnpm preview` | Preview the production build |
+| `pnpm run typecheck` | TypeScript check for `web` |
+| `pnpm check` | Biome format + lint check |
+| `pnpm exec biome ci` | Biome in CI mode |
+| `pnpm --filter web fetch:projects` | Refresh GitHub projects JSON |
+| `pnpm --filter web fetch:articles` | Refresh Substack articles JSON |
 
-## What’s included
+## Repository layout
 
-- **pnpm workspace** — root `pnpm-workspace.yaml` with catalog, overrides, and install policy hooks ready to fill in
-- **Biome** — lint and format via `biome.json`, plus VS Code defaults under `.vscode/`
-- **React Doctor** — available as a root dev dependency and run in CI
-- **GitHub Actions** — Lint workflow (Biome CI, lockfile validation, React Doctor) and Dependabot update config
-- **Ignore rules** — common build, env, log, and editor artifacts in `.gitignore`
-
-## Install policy
-
-This template turns on several pnpm safeguards so installs fail closed by default:
-
-| Setting | Effect |
+| Path | Role |
 | --- | --- |
-| `engineStrict` | Reject Node/pnpm versions outside `package.json` `engines` |
-| `strictDepBuilds` | Only packages listed in `allowBuilds` may run install/build scripts |
-| `saveExact` | Save exact dependency versions |
-| `minimumReleaseAge` | Delay brand-new releases (21 days) before they can be installed |
-| `blockExoticSubdeps` | Block transitive deps from git/URL sources |
-| `trustPolicy: no-downgrade` | Block installs when trust evidence would weaken vs an earlier release |
+| [`apps/web`](apps/web) | Portfolio UI |
+| [`AGENTS.md`](AGENTS.md) | Entrypoint for coding agents |
+| [`.agents/docs/ARCHITECTURE.md`](.agents/docs/ARCHITECTURE.md) | System architecture |
+| [`.agents/docs/DESIGN.md`](.agents/docs/DESIGN.md) | Visual design system |
+| [`.agents/`](.agents/) | Rules, commands, hooks, and skills |
 
-When a dependency needs a build script or a trust-policy exception, add it explicitly to `allowBuilds` or `trustPolicyExclude` in `pnpm-workspace.yaml` after reviewing it.
+Agents should start at [`AGENTS.md`](AGENTS.md).
+
+## CI
+
+- **Lint** — fetch portfolio data, Biome CI, lockfile check, React Doctor
+- **Test** — typecheck
+- **Audit** — `pnpm audit`
+- **Dependabot** — weekly npm and GitHub Actions updates
 
 ## License
 

@@ -125,4 +125,4 @@ After agent edits to `src/**/*.ts(x)`, [`.agents/hooks/react-doctor-after-file-e
 pnpm run doctor --verbose --scope lines --base HEAD --yes --no-score --blocking none
 ```
 
-Registered in [`.cursor/hooks.json`](../../../.cursor/hooks.json) after the markdownlint hook.
+Registered in [`.cursor/hooks.json`](../../../.cursor/hooks.json) after the Biome `afterFileEdit` hook.

@@ -1,0 +1,13 @@
+---
+description: How agents should work in this repository
+alwaysApply: true
+---
+
+# Agent workflow
+
+- Read [`AGENTS.md`](../../AGENTS.md) for stack, scripts, and layout.
+- Canonical agent artifacts live under [`.agents/`](../) (rules, commands, hooks, skills).
+- After React/TSX changes, run `pnpm run doctor:changed` before considering the task done.
+- Format/lint with Biome project scripts; do **not** add `biome-ignore` or disable rules unless the user explicitly asks.
+- Prefer existing skills under `.agents/skills/` over inventing parallel conventions.
+- Do not commit secrets; use env vars (`GITHUB_TOKEN`, etc.) only where documented.

@@ -1,0 +1,13 @@
+---
+description: Theme tokens and CSS Modules usage
+globs: apps/web/src/**/*.{css,tsx}
+alwaysApply: false
+---
+
+# Theme and CSS
+
+- Theme colors/fonts live as CSS variables on `:root` / `[data-theme]` in `styles/global.css`.
+- In components, use `var(--…)` — do not hardcode palette hex/rgb outside `global.css`.
+- Theme switching is `data-theme="dark"|"light"` on the document element.
+- Component styles use CSS Modules (`index.module.css`) colocated with the component.
+- Respect `prefers-reduced-motion` via the global no-op `fade-up` keyframes; do not reintroduce `!important` animation overrides.

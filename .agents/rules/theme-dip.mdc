@@ -1,0 +1,13 @@
+---
+description: Theme dependency injection boundaries
+globs: apps/web/src/App.tsx,apps/web/src/index.tsx,apps/web/src/types/theme.types.ts,apps/web/src/contexts/ThemeContext/**/*,apps/web/src/hooks/useTheme.ts,apps/web/src/utils/themeApplicator.ts,apps/web/src/utils/themeStorage.ts,apps/web/src/components/core/ThemeToggle/**/*,apps/web/src/components/layouts/MainLayout/**/*
+alwaysApply: false
+---
+
+# Theme DIP
+
+- Contracts: `ThemeStorage` and `ThemeApplicator` in `types/theme.types.ts`.
+- Create concrete adapters only in `index.tsx` (`createLocalThemeStorage`, `createDocumentThemeApplicator`).
+- `App` accepts `applicator` + `storage` and wires `ThemeProvider` — no factory imports in `App`.
+- `ThemeToggle` is presentational (props only). `MainLayout` bridges `useTheme` → toggle.
+- Do not call `document` / `localStorage` inside the provider or toggle.
