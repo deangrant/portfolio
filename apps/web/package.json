@@ -15,9 +15,10 @@
   "scripts": {
     "build": "tsc --noEmit && vite build",
     "dev": "vite",
+    "fetch:articles": "node ./scripts/fetch-substack-articles.mjs",
     "fetch:projects": "node ./scripts/fetch-github-projects.mjs",
-    "prebuild": "pnpm run fetch:projects",
-    "predev": "pnpm run fetch:projects",
+    "prebuild": "pnpm run fetch:projects && pnpm run fetch:articles",
+    "predev": "pnpm run fetch:projects && pnpm run fetch:articles",
     "preview": "vite preview"
   },
   "type": "module",

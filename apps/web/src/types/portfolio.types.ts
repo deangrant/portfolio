@@ -72,9 +72,6 @@ export interface Article {
  * Static portfolio content consumed by the Home page sections.
  */
 export interface PortfolioContent {
-  /** Featured Substack essays. */
-  articles: Article[];
-
   /** Display name used in the hero and footer. */
   name: string;
 

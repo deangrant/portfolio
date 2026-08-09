@@ -38,6 +38,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Fetch Substack articles
+        run: pnpm --filter web fetch:articles
+
       - name: Setup Biome
         uses: biomejs/setup-biome@4c91541eaada48f67d7dbd7833600ce162b68f51
 

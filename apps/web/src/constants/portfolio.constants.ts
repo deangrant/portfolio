@@ -8,36 +8,10 @@ import type { PortfolioContent } from "@/types/portfolio.types";
  * Placeholder portfolio copy and links. Replace these values with real content
  * when publishing.
  *
- * Projects are generated at build time from GitHub into
- * `src/data/github-projects.generated.json`.
+ * Projects and articles are generated at build time into
+ * `src/data/*.generated.json`.
  */
 export const PORTFOLIO: PortfolioContent = {
-  articles: [
-    {
-      href: "https://example.substack.com/p/shipping-less",
-      publishedAt: "2026-05-12",
-      readTime: "6 min read",
-      summary:
-        "Why shrinking scope often reveals better product and architecture decisions.",
-      title: "Shipping Less, Learning More",
-    },
-    {
-      href: "https://example.substack.com/p/css-that-ages-well",
-      publishedAt: "2026-03-28",
-      readTime: "8 min read",
-      summary:
-        "A practical approach to tokens, layers, and restraint when styling long-lived apps.",
-      title: "CSS That Ages Well",
-    },
-    {
-      href: "https://example.substack.com/p/open-source-writing",
-      publishedAt: "2026-01-09",
-      readTime: "5 min read",
-      summary:
-        "How public repositories can sharpen both code taste and technical essays.",
-      title: "Open Source as a Writing Habit",
-    },
-  ],
   name: "Dean Grant",
   socialLinks: [
     {

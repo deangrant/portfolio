@@ -10,7 +10,7 @@ export function SiteFooter({ name }: SiteFooterProps) {
   return (
     <footer className={styles.footer}>
       <p className={styles.copy}>
-        © {year} {name}. Built with simplicity in mind.
+        © {year} {name}.
       </p>
     </footer>
   );

@@ -1,6 +1,7 @@
 import { PORTFOLIO } from "@/constants/portfolio.constants";
 import githubProjects from "@/data/github-projects.generated.json";
-import type { Project } from "@/types/portfolio.types";
+import substackArticles from "@/data/substack-articles.generated.json";
+import type { Article, Project } from "@/types/portfolio.types";
 import { ArticlesSection } from "./components/ArticlesSection";
 import { HeroSection } from "./components/HeroSection";
 import { ProjectsSection } from "./components/ProjectsSection";
@@ -9,10 +10,11 @@ import { SocialLinks } from "./components/SocialLinks";
 import styles from "./index.module.css";
 
 const projects = githubProjects as Project[];
+const articles = substackArticles as Article[];
 
 /**
  * Composes the single-page portfolio sections from static content and
- * build-time GitHub projects.
+ * build-time GitHub projects and Substack articles.
  */
 export function HomePage() {
   return (
@@ -20,7 +22,7 @@ export function HomePage() {
       <HeroSection name={PORTFOLIO.name} tagline={PORTFOLIO.tagline} />
       <SocialLinks links={PORTFOLIO.socialLinks} />
       <ProjectsSection projects={projects} />
-      <ArticlesSection articles={PORTFOLIO.articles} />
+      {articles.length > 0 ? <ArticlesSection articles={articles} /> : null}
       <SiteFooter name={PORTFOLIO.name} />
     </div>
   );
