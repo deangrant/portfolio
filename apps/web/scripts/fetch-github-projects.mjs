@@ -5,7 +5,9 @@ import usernames from "../src/constants/usernames.json" with { type: "json" };
 import { assertProjects } from "./lib/assert-generated-data.mjs";
 
 const FETCH_TIMEOUT_MS = 15_000;
+const MAX_PAGES = 10;
 const MAX_PROJECTS = 12;
+const PER_PAGE = 100;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputPath = path.resolve(
@@ -126,16 +128,33 @@ function assertGithubRepos(data) {
 }
 
 /**
- * Fetches public owner repositories for a GitHub user.
+ * Returns whether a repository is eligible for the portfolio carousel.
+ * @param {GithubRepo} repo Repository payload from GitHub.
+ * @returns {boolean}
+ */
+function isEligibleRepo(repo) {
+  return (
+    !repo.fork &&
+    !repo.archived &&
+    !repo.private &&
+    typeof repo.name === "string" &&
+    repo.name.length > 0
+  );
+}
+
+/**
+ * Fetches one page of owner repositories for a GitHub user.
  * @param {string} username GitHub login.
+ * @param {number} page 1-based page index.
  * @returns {Promise<GithubRepo[]>}
  */
-async function fetchGithubRepos(username) {
+async function fetchGithubReposPage(username, page) {
   const url = new URL(`https://api.github.com/users/${username}/repos`);
   url.searchParams.set("type", "owner");
   url.searchParams.set("sort", "created");
   url.searchParams.set("direction", "desc");
-  url.searchParams.set("per_page", "100");
+  url.searchParams.set("per_page", String(PER_PAGE));
+  url.searchParams.set("page", String(page));
 
   const response = await fetch(url, {
     headers: createGithubHeaders(),
@@ -150,6 +169,29 @@ async function fetchGithubRepos(username) {
   }
 
   return assertGithubRepos(await response.json());
+}
+
+/**
+ * Fetches owner repositories across pages until enough eligible repos exist.
+ * @param {string} username GitHub login.
+ * @returns {Promise<GithubRepo[]>}
+ */
+async function fetchGithubRepos(username) {
+  /** @type {GithubRepo[]} */
+  const repos = [];
+
+  for (let page = 1; page <= MAX_PAGES; page += 1) {
+    const pageRepos = await fetchGithubReposPage(username, page);
+    repos.push(...pageRepos);
+
+    const eligibleCount = repos.filter(isEligibleRepo).length;
+
+    if (eligibleCount >= MAX_PROJECTS || pageRepos.length < PER_PAGE) {
+      break;
+    }
+  }
+
+  return repos;
 }
 
 /**
@@ -217,14 +259,7 @@ function mapGithubRepoToProject(repo) {
  */
 function toProjects(repos) {
   return repos
-    .filter(
-      (repo) =>
-        !repo.fork &&
-        !repo.archived &&
-        !repo.private &&
-        typeof repo.name === "string" &&
-        repo.name.length > 0,
-    )
+    .filter(isEligibleRepo)
     .sort(
       (left, right) =>
         Date.parse(right.created_at) - Date.parse(left.created_at),
