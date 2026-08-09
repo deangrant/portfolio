@@ -39,20 +39,16 @@ export function ProjectCard({ project }: ProjectCardProps) {
               </li>
             ))}
           </ul>
-          <ul
-            aria-hidden={hiddenCount === 0}
-            aria-label={hiddenCount > 0 ? "Additional topics" : undefined}
-            className={styles.overflowRow}
-          >
-            {hiddenCount > 0 ? (
+          {hiddenCount > 0 ? (
+            <ul aria-label="Additional topics" className={styles.overflowRow}>
               <li
                 aria-label={`${hiddenCount} more topics: ${hiddenTopics.join(", ")}`}
                 className={styles.tag}
               >
                 +{hiddenCount}
               </li>
-            ) : null}
-          </ul>
+            </ul>
+          ) : null}
         </div>
       ) : null}
       <a
