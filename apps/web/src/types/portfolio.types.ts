@@ -29,17 +29,23 @@ export interface SocialLink {
  * A featured GitHub repository card in the projects section.
  */
 export interface Project {
+  /** ISO timestamp when the repository was created. */
+  createdAt: string;
+
   /** Short summary of what the project does. */
   description: string;
 
   /** Direct URL to the GitHub repository. */
   href: string;
 
-  /** Technology labels shown as tags. */
-  techStack: string[];
-
   /** Repository or project display name. */
   title: string;
+
+  /** GitHub repository topics shown as tags. */
+  topics: string[];
+
+  /** ISO timestamp of the last push to the repository. */
+  updatedAt: string;
 }
 
 /**
@@ -71,9 +77,6 @@ export interface PortfolioContent {
 
   /** Display name used in the hero and footer. */
   name: string;
-
-  /** Selected GitHub repositories. */
-  projects: Project[];
 
   /** Primary contact channels. */
   socialLinks: SocialLink[];

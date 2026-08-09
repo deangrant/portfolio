@@ -1,0 +1,159 @@
+[
+  {
+    "createdAt": "2026-08-09T09:38:06Z",
+    "description": "Fast Whisper speech-to-text for Rust with timed segments, language detection, Symphonia decode (no FFmpeg), and optional CUDA via whisper.cpp",
+    "href": "https://github.com/deangrant/earshot",
+    "title": "earshot",
+    "topics": [
+      "asr",
+      "audio",
+      "cuda",
+      "ggml",
+      "language-detection",
+      "machine-learning",
+      "rust",
+      "speech-to-text",
+      "stt",
+      "symphonia",
+      "transcription",
+      "whisper",
+      "whisper-cpp"
+    ],
+    "updatedAt": "2026-08-09T09:39:41Z"
+  },
+  {
+    "createdAt": "2026-08-07T18:57:54Z",
+    "description": "Browser JSON editor with tree, text, and table views: format, repair, transform, and validate locally",
+    "href": "https://github.com/deangrant/json-editor",
+    "title": "json-editor",
+    "topics": [
+      "ajv",
+      "codemirror",
+      "json",
+      "json-editor",
+      "monorepo",
+      "react",
+      "typescript",
+      "vite"
+    ],
+    "updatedAt": "2026-08-09T09:24:41Z"
+  },
+  {
+    "createdAt": "2026-08-07T10:11:25Z",
+    "description": "Go library to parse User-Agent strings and Client Hints into device, OS, engine, and agent details — stdlib-only.",
+    "href": "https://github.com/deangrant/user-agent",
+    "title": "user-agent",
+    "topics": [
+      "bot-detection",
+      "browser-detection",
+      "cli",
+      "client-hints",
+      "device-detection",
+      "go",
+      "golan",
+      "http",
+      "sec-ch-ua",
+      "stdlib",
+      "user-agent",
+      "user-agent-parse"
+    ],
+    "updatedAt": "2026-08-07T14:57:26Z"
+  },
+  {
+    "createdAt": "2026-08-05T11:59:08Z",
+    "description": "Command-line OSINT tool that checks whether a username exists on many social networks and websites.",
+    "href": "https://github.com/deangrant/social-gopher",
+    "title": "social-gopher",
+    "topics": [
+      "cli",
+      "golang",
+      "osint",
+      "reconnaissance",
+      "security-tools",
+      "social-media",
+      "socks5",
+      "tor",
+      "username-enumeration"
+    ],
+    "updatedAt": "2026-08-09T11:02:56Z"
+  },
+  {
+    "createdAt": "2026-08-04T09:22:59Z",
+    "description": "Rust crate that finds stop locations in GPS and mobility trajectories (stay detection and Infomap clustering).",
+    "href": "https://github.com/deangrant/infostop",
+    "title": "infostop",
+    "topics": [
+      "clustering",
+      "gps",
+      "infomap",
+      "mobility",
+      "rust",
+      "stops",
+      "trajectory"
+    ],
+    "updatedAt": "2026-08-09T08:02:11Z"
+  },
+  {
+    "createdAt": "2026-07-30T19:55:16Z",
+    "description": "A starter template for a pnpm monorepo with strict install policy, Biome formatting/linting, and GitHub Actions CI.",
+    "href": "https://github.com/deangrant/pnpm-workspace",
+    "title": "pnpm-workspace",
+    "topics": [],
+    "updatedAt": "2026-08-09T09:33:23Z"
+  },
+  {
+    "createdAt": "2026-01-30T04:05:58Z",
+    "description": "Reusable agent commands, hooks, rules and skills for consistent, AI-assisted coding and domain guidance across projects.",
+    "href": "https://github.com/deangrant/.agents",
+    "title": ".agents",
+    "topics": [
+      "agents",
+      "cursor",
+      "hooks",
+      "mcp",
+      "rules",
+      "skills",
+      "tools"
+    ],
+    "updatedAt": "2026-08-02T09:51:54Z"
+  },
+  {
+    "createdAt": "2026-01-17T05:52:47Z",
+    "description": "A collection of reusable, parameterized scale rule templates for Azure Container Apps.",
+    "href": "https://github.com/deangrant/az-container-app-scale-rules",
+    "title": "az-container-app-scale-rules",
+    "topics": [
+      "azure",
+      "container-apps",
+      "scale"
+    ],
+    "updatedAt": "2026-01-17T06:19:13Z"
+  },
+  {
+    "createdAt": "2025-06-06T04:56:08Z",
+    "description": "A standardized email and phone number normalization and hashing utility that follows UID2 specifications for email address and phone number processing. This tool ensures consistent normalization and hash generation for identity resolution and data matching purposes.",
+    "href": "https://github.com/deangrant/dii-operator",
+    "title": "dii-operator",
+    "topics": [
+      "base64",
+      "batch-processing",
+      "cryptography",
+      "data-matching",
+      "data-privacy",
+      "dii",
+      "email-normalization",
+      "hashing",
+      "identity-resolution",
+      "material-ui",
+      "nextjs",
+      "phone-normalization",
+      "privacy",
+      "react",
+      "sha256",
+      "typescript",
+      "uid2",
+      "user-identification"
+    ],
+    "updatedAt": "2026-07-30T15:31:13Z"
+  }
+]

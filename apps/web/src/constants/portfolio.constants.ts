@@ -1,8 +1,12 @@
+import { GITHUB_USERNAME } from "@/constants/github.constants";
 import type { PortfolioContent } from "@/types/portfolio.types";
 
 /**
  * Placeholder portfolio copy and links. Replace these values with real content
  * when publishing.
+ *
+ * Projects are generated at build time from GitHub into
+ * `src/data/github-projects.generated.json`.
  */
 export const PORTFOLIO: PortfolioContent = {
   articles: [
@@ -32,40 +36,10 @@ export const PORTFOLIO: PortfolioContent = {
     },
   ],
   name: "Dean Grant",
-  projects: [
-    {
-      description:
-        "A small command-line toolkit for inspecting and replaying HTTP traffic during local development.",
-      href: "https://github.com/example/signal-cli",
-      techStack: ["TypeScript", "Node.js"],
-      title: "signal-cli",
-    },
-    {
-      description:
-        "Opinionated React primitives for calm, content-first marketing pages.",
-      href: "https://github.com/example/paper-kit",
-      techStack: ["React", "CSS Modules"],
-      title: "paper-kit",
-    },
-    {
-      description:
-        "Lightweight note capture that links commits, PRs, and design decisions in one timeline.",
-      href: "https://github.com/example/trace-notes",
-      techStack: ["Python", "SQLite"],
-      title: "trace-notes",
-    },
-    {
-      description:
-        "A tiny edge-friendly cache helper with predictable invalidation rules.",
-      href: "https://github.com/example/edge-cache",
-      techStack: ["TypeScript", "Cloudflare Workers"],
-      title: "edge-cache",
-    },
-  ],
   socialLinks: [
     {
       channel: "github",
-      href: "https://github.com/example",
+      href: `https://github.com/${GITHUB_USERNAME}`,
       label: "GitHub",
     },
     {

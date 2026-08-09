@@ -33,6 +33,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Fetch GitHub projects
+        run: pnpm --filter web fetch:projects
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Setup Biome
         uses: biomejs/setup-biome@4c91541eaada48f67d7dbd7833600ce162b68f51
 

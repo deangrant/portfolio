@@ -15,6 +15,9 @@
   "scripts": {
     "build": "tsc --noEmit && vite build",
     "dev": "vite",
+    "fetch:projects": "node ./scripts/fetch-github-projects.mjs",
+    "prebuild": "pnpm run fetch:projects",
+    "predev": "pnpm run fetch:projects",
     "preview": "vite preview"
   },
   "type": "module",

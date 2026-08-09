@@ -25,22 +25,54 @@
 
 .description {
   flex: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
   color: var(--color-muted);
   font-size: 0.9375rem;
 }
 
-.tags {
+.topics {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: var(--space-2);
 }
 
+.measure {
+  position: absolute;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.topicRow,
+.overflowRow {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--space-2);
+  min-height: calc(0.4rem + 1.25em);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
 .tag {
+  flex-shrink: 0;
   padding: 0.2rem 0.5rem;
   border: 1px solid var(--color-border);
   border-radius: 999px;
   color: var(--color-muted);
   font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 .link {

@@ -1,9 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ProjectCard } from "@/pages/Home/components/ProjectCard";
+import type { Project } from "@/types/portfolio.types";
 import styles from "./index.module.css";
 import type { ProjectsSectionProps } from "./index.types";
 
 const TRACK_ID = "selected-projects-track";
+
+/**
+ * Sort keys available in the projects carousel.
+ */
+type ProjectSortKey = "created" | "updated";
 
 /**
  * Returns the pixel width of one carousel slide, including its trailing gap.
@@ -25,12 +31,32 @@ function getSlideStep(track: HTMLElement): number {
 }
 
 /**
+ * Returns a new project list sorted by the active date key, newest first.
+ * @param projects Projects to sort.
+ * @param sortKey Created or updated ordering.
+ * @returns Sorted copy of the projects array.
+ */
+function sortProjects(projects: Project[], sortKey: ProjectSortKey): Project[] {
+  const dateKey = sortKey === "created" ? "createdAt" : "updatedAt";
+
+  return [...projects].sort(
+    (left, right) => Date.parse(right[dateKey]) - Date.parse(left[dateKey]),
+  );
+}
+
+/**
  * Renders the selected GitHub projects as a horizontal carousel.
  */
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const trackRef = useRef<HTMLUListElement>(null);
+  const [sortKey, setSortKey] = useState<ProjectSortKey>("created");
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const sortedProjects = useMemo(
+    () => sortProjects(projects, sortKey),
+    [projects, sortKey],
+  );
 
   const updateScrollState = useCallback(() => {
     const track = trackRef.current;
@@ -53,6 +79,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       return;
     }
 
+    track.scrollLeft = 0;
     updateScrollState();
     track.addEventListener("scroll", updateScrollState, { passive: true });
 
@@ -65,7 +92,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       track.removeEventListener("scroll", updateScrollState);
       observer.disconnect();
     };
-  }, [projects, updateScrollState]);
+  }, [sortedProjects, updateScrollState]);
 
   const scrollBySlide = useCallback((direction: -1 | 1) => {
     const track = trackRef.current;
@@ -89,53 +116,85 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
         <h2 className={styles.title} id="projects-heading">
           Projects
         </h2>
-        <div className={styles.controls}>
-          <button
-            aria-controls={TRACK_ID}
-            aria-label="Previous projects"
-            className={styles.navButton}
-            disabled={!canScrollPrev}
-            onClick={() => {
-              scrollBySlide(-1);
-            }}
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              className={styles.navIcon}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              viewBox="0 0 24 24"
+        <div className={styles.headerActions}>
+          <fieldset aria-label="Sort projects" className={styles.sortGroup}>
+            <button
+              aria-pressed={sortKey === "created"}
+              className={
+                sortKey === "created"
+                  ? `${styles.sortButton} ${styles.sortButtonActive}`
+                  : styles.sortButton
+              }
+              onClick={() => {
+                setSortKey("created");
+              }}
+              type="button"
             >
-              <path d="M15 6 9 12l6 6" />
-            </svg>
-          </button>
-          <button
-            aria-controls={TRACK_ID}
-            aria-label="Next projects"
-            className={styles.navButton}
-            disabled={!canScrollNext}
-            onClick={() => {
-              scrollBySlide(1);
-            }}
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              className={styles.navIcon}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              viewBox="0 0 24 24"
+              Created
+            </button>
+            <button
+              aria-pressed={sortKey === "updated"}
+              className={
+                sortKey === "updated"
+                  ? `${styles.sortButton} ${styles.sortButtonActive}`
+                  : styles.sortButton
+              }
+              onClick={() => {
+                setSortKey("updated");
+              }}
+              type="button"
             >
-              <path d="m9 6 6 6-6 6" />
-            </svg>
-          </button>
+              Updated
+            </button>
+          </fieldset>
+          <div className={styles.controls}>
+            <button
+              aria-controls={TRACK_ID}
+              aria-label="Previous projects"
+              className={styles.navButton}
+              disabled={!canScrollPrev}
+              onClick={() => {
+                scrollBySlide(-1);
+              }}
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                className={styles.navIcon}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                viewBox="0 0 24 24"
+              >
+                <path d="M15 6 9 12l6 6" />
+              </svg>
+            </button>
+            <button
+              aria-controls={TRACK_ID}
+              aria-label="Next projects"
+              className={styles.navButton}
+              disabled={!canScrollNext}
+              onClick={() => {
+                scrollBySlide(1);
+              }}
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                className={styles.navIcon}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                viewBox="0 0 24 24"
+              >
+                <path d="m9 6 6 6-6 6" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
       <ul className={styles.track} id={TRACK_ID} ref={trackRef}>
-        {projects.map((project) => (
+        {sortedProjects.map((project) => (
           <li className={styles.slide} key={project.title}>
             <ProjectCard project={project} />
           </li>
