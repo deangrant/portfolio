@@ -18,9 +18,12 @@ export function ArticlesSection({ articles }: ArticlesSectionProps) {
 
   return (
     <section aria-labelledby="writing-heading" className={styles.section}>
-      <h2 className={styles.title} id="writing-heading">
-        Writing
-      </h2>
+      <div className={styles.titleRow}>
+        <h2 className={styles.title} id="writing-heading">
+          Writing
+        </h2>
+        <span className={styles.countBadge}>{articles.length}</span>
+      </div>
       <ul className={styles.list} id={LIST_ID}>
         {visibleArticles.map((article) => (
           <ArticleItem article={article} key={article.href} />

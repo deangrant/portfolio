@@ -36,9 +36,12 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section aria-labelledby="projects-heading" className={styles.section}>
       <div className={styles.header}>
-        <h2 className={styles.title} id="projects-heading">
-          Projects
-        </h2>
+        <div className={styles.titleRow}>
+          <h2 className={styles.title} id="projects-heading">
+            Projects
+          </h2>
+          <span className={styles.countBadge}>{visibleProjects.length}</span>
+        </div>
         <div className={styles.headerActions}>
           <fieldset aria-label="Sort projects" className={styles.sortGroup}>
             <button
