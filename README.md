@@ -72,6 +72,9 @@ Agents should start at [`AGENTS.md`](AGENTS.md).
 - **Lint** — fetch portfolio data, Biome CI, lockfile check, React Doctor
 - **Test** — typecheck
 - **Audit** — `pnpm audit`
+- **Pages** — nightly + manual deploy via GitHub Actions to custom domain
+  `deangrant.me` (repo must be **public**; set Pages source to **GitHub Actions**,
+  add the custom domain, enforce HTTPS, and point DNS at GitHub Pages)
 - **Dependabot** — weekly npm and GitHub Actions updates
 
 ## License
