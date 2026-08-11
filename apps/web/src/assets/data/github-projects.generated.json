@@ -1,5 +1,28 @@
 [
   {
+    "createdAt": "2026-08-10T08:37:53Z",
+    "description": "Build geometry from OpenStreetMap relations: simplify rings and export poly, GeoJSON, WKT, or SVG. Stdlib-only Python CLI and library.",
+    "href": "https://github.com/deangrant/boundarykit",
+    "title": "boundarykit",
+    "topics": [
+      "boundary",
+      "cli",
+      "douglas-peucker",
+      "geojson",
+      "geometry",
+      "geospatial",
+      "gis",
+      "mapping",
+      "openstreetmap",
+      "osm",
+      "osm-api",
+      "python",
+      "svg",
+      "wkt"
+    ],
+    "updatedAt": "2026-08-10T09:03:36Z"
+  },
+  {
     "createdAt": "2026-08-09T09:38:06Z",
     "description": "Fast Whisper speech-to-text for Rust with timed segments, language detection, Symphonia decode (no FFmpeg), and optional CUDA via whisper.cpp",
     "href": "https://github.com/deangrant/earshot",
@@ -36,7 +59,7 @@
       "typescript",
       "vite"
     ],
-    "updatedAt": "2026-08-09T09:24:41Z"
+    "updatedAt": "2026-08-10T15:20:43Z"
   },
   {
     "createdAt": "2026-08-07T10:11:25Z",
@@ -75,7 +98,7 @@
       "tor",
       "username-enumeration"
     ],
-    "updatedAt": "2026-08-09T11:02:56Z"
+    "updatedAt": "2026-08-09T18:18:07Z"
   },
   {
     "createdAt": "2026-08-04T09:22:59Z",
@@ -92,14 +115,6 @@
       "trajectory"
     ],
     "updatedAt": "2026-08-09T08:02:11Z"
-  },
-  {
-    "createdAt": "2026-07-30T19:55:16Z",
-    "description": "A starter template for a pnpm monorepo with strict install policy, Biome formatting/linting, and GitHub Actions CI.",
-    "href": "https://github.com/deangrant/pnpm-workspace",
-    "title": "pnpm-workspace",
-    "topics": [],
-    "updatedAt": "2026-08-09T09:33:23Z"
   },
   {
     "createdAt": "2026-01-30T04:05:58Z",

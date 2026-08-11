@@ -7,9 +7,8 @@
  * - `linkedin`
  * - `substack`
  * - `x`
- * - `email`
  */
-export type SocialChannel = "github" | "linkedin" | "substack" | "x" | "email";
+export type SocialChannel = "github" | "linkedin" | "substack" | "x";
 
 /**
  * A single social or contact link rendered in the social links row.
@@ -18,7 +17,7 @@ export interface SocialLink {
   /** Stable channel key used for icons and labels. */
   channel: SocialChannel;
 
-  /** Destination URL or `mailto:` address. */
+  /** Destination URL. */
   href: string;
 
   /** Accessible and visible label for the link. */

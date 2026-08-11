@@ -34,11 +34,6 @@ export const PORTFOLIO: PortfolioContent = {
       href: `https://x.com/${X_USERNAME}`,
       label: "X",
     },
-    {
-      channel: "email",
-      href: "mailto:hello@example.com",
-      label: "Email",
-    },
   ],
   tagline:
     "For years I’ve enjoyed digging into complex infrastructure and data challenges. Now I’m putting that experience into building geospatial intelligence platforms designed to deliver clearer decisions from global-scale data.",

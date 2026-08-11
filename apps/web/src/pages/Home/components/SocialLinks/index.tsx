@@ -7,19 +7,6 @@ import type { SocialLinksProps } from "./index.types";
  * Exhaustive map of social channel identifiers to their inline SVG icons.
  */
 const SOCIAL_ICONS: Record<SocialChannel, ReactElement> = {
-  email: (
-    <svg
-      aria-hidden="true"
-      className={styles.icon}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      viewBox="0 0 24 24"
-    >
-      <rect height="14" rx="2" width="18" x="3" y="5" />
-      <path d="m4 7 8 6 8-6" />
-    </svg>
-  ),
   github: (
     <svg aria-hidden="true" className={styles.icon} viewBox="0 0 24 24">
       <path
@@ -67,7 +54,7 @@ function SocialIcon({ channel }: { channel: SocialChannel }) {
  */
 export function SocialLinks({ links }: SocialLinksProps) {
   return (
-    <nav aria-label="Social and contact links">
+    <nav aria-label="Social links">
       <ul className={styles.list}>
         {links.map((link) => {
           const isExternal = link.href.startsWith("http");
