@@ -33,7 +33,7 @@ typography:
     letterSpacing: -0.04em
   tagline:
     fontFamily: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif
-    fontSize: 1.125rem
+    fontSize: 1rem
     fontWeight: 400
     lineHeight: 1.65
   section-label:
@@ -108,6 +108,22 @@ components:
   sort-button-active:
     textColor: "{colors.fg}"
     backgroundColor: "{colors.hover}"
+  language-filter:
+    textColor: "{colors.muted}"
+    borderColor: "{colors.border}"
+    typography: "{typography.control-label}"
+    rounded: "{rounded.full}"
+    padding: 0.35rem 0.75rem
+  language-filter-active:
+    textColor: "{colors.fg}"
+    backgroundColor: "{colors.hover}"
+    borderColor: "{colors.muted}"
+  section-count-badge:
+    textColor: "{colors.muted}"
+    borderColor: "{colors.border}"
+    typography: "{typography.control-label}"
+    rounded: "{rounded.full}"
+    padding: 0.2rem 0.5rem
   nav-button:
     backgroundColor: transparent
     textColor: "{colors.fg}"
@@ -130,7 +146,7 @@ components:
 Portfolio is a calm, editorial personal site for Dean Grant.
 Default presentation is **dark**; visitors can switch to light via `data-theme`.
 The personality is neutral near-black / near-white surfaces, quiet borders, and
-system UI sans — focused on readable copy and scannable project/article lists,
+system UI sans — focused on readable copy and a scannable project carousel,
 not a colorful marketing dashboard.
 
 Canonical CSS tokens live in
@@ -170,7 +186,9 @@ Roles in use:
 
 - **Body** — `1rem` / `1.6` line-height on `body`.
 - **Name (hero)** — `clamp(2.25rem, 6vw, 3rem)`, weight `560`, tight tracking.
-- **Tagline** — `1.125rem`, muted, slightly looser line-height.
+- **Tagline** — `1rem`, muted, slightly looser line-height (`1.65`); full
+  content width (same column as the name, no max-width); multi-paragraph copy
+  via preserved line breaks (`white-space: pre-line`).
 - **Section label** — small uppercase (`0.8125rem`), muted, wide tracking.
 - **Card title / body** — slightly tight titles; muted clamped descriptions.
 
@@ -181,12 +199,18 @@ Avoid decorative display fonts or a second mono stack unless content needs it.
 Content sits in a centered column capped by `--max-width` (`72rem`).
 Spacing uses `--space-1` … `--space-8` (`0.25rem` … `4.5rem`).
 
-Home is a vertical stack of sections (hero → social → projects → articles →
-footer). Projects use a horizontal carousel:
+Home is a vertical stack of sections (hero → social → projects → footer).
+Writing (`ArticlesSection`) remains in the codebase but is intentionally not
+mounted until that content is ready to release.
+
+Projects use a horizontal carousel:
 
 - 1 visible card by default
 - 2 from `640px`
 - 3 from `1024px`
+- Navigation advances one card at a time and clamps to a **full last page** of
+  visible cards (so the final view still fills the track); Next disables at
+  that end.
 
 Prefer existing space tokens over one-off margins.
 
@@ -203,8 +227,8 @@ Avoid multi-layer drop shadows, glassmorphism, and neon glows.
 ## Shapes
 
 - **`0.5rem` (`--radius`)** — project cards and most rectangular chrome.
-- **Pill (`9999px`)** — theme toggle, carousel nav buttons, sort group, topic
-  chips.
+- **Pill (`9999px`)** — theme toggle, carousel nav buttons, sort group,
+  language filter pills, section count badges, and topic chips.
 
 Keep radii consistent; do not mix large marketing-card radii into the page.
 
@@ -215,10 +239,13 @@ Map new UI to existing patterns:
 - **ThemeToggle** — pill icon button; border + hover wash; presentational.
 - **ProjectCard** — bordered surface, title/description/topics; topic chips are
   muted pills; overflow count when topics wrap.
-- **ProjectsSection controls** — pill sort group (Created / Updated) and circular
-  prev/next nav.
+- **ProjectsSection** — section label with a small count badge (filtered list
+  length); pill sort group (Created / Updated); single-select language filter
+  pills derived from GitHub languages present on the loaded projects (plus All);
+  circular prev/next nav with full-last-page clamp.
 - **SocialLinks** — inline icon + label row; inherit link color; muted on hover.
-- **Articles** — list rows with muted metadata; match section label typography.
+- **Articles** — list-row pattern with muted metadata remains for a future
+  Writing release; not currently shown on the home page.
 
 App code should use CSS variables from `global.css` rather than hard-coded hex
 in new modules when a token already covers the role.
@@ -226,9 +253,9 @@ in new modules when a token already covers the role.
 ## Motion
 
 Sections enter with global `fade-up` (`420ms ease both`), staggered by delay
-(social `60ms`, projects `120ms`, articles `180ms`, footer `240ms`).
-Under `prefers-reduced-motion: reduce`, `fade-up` keyframes become a no-op
-(identity opacity/transform) in `global.css`.
+(social `60ms`, projects `120ms`, articles `180ms` when mounted, footer
+`240ms`). Under `prefers-reduced-motion: reduce`, `fade-up` keyframes become a
+no-op (identity opacity/transform) in `global.css`.
 
 Control hovers use short `160ms` transitions alongside the theme transition
 token. Carousel smooth scrolling disables to `auto` when reduced motion is on.

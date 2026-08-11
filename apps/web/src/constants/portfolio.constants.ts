@@ -36,5 +36,5 @@ export const PORTFOLIO: PortfolioContent = {
     },
   ],
   tagline:
-    "For years I’ve enjoyed digging into complex infrastructure and data challenges. Now I’m putting that experience into building geospatial intelligence platforms designed to deliver clearer decisions from global-scale data.",
+    "I work across the full technology stack, from React and TypeScript applications to APIs, distributed services, databases, and cloud infrastructure. I’m particularly interested in the challenges that come with building and scaling systems, including reliability, security, asynchronous processing, dependency management, deployment, and observability. I enjoy breaking down complex problems, understanding the trade-offs, and finding solutions that are practical to build, operate, and maintain.\n\nI believe good engineering starts with clear architecture and sound development practices. I value automation, effective tooling, and pragmatic standards that help teams move quickly without creating unnecessary complexity. The aim is simple: build software that works well today and remains maintainable as it evolves.",
 };

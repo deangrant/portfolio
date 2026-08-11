@@ -13,8 +13,8 @@
 }
 
 .tagline {
-  max-width: min(56rem, 100%);
   color: var(--color-muted);
-  font-size: 1.125rem;
+  font-size: 1rem;
   line-height: 1.65;
+  white-space: pre-line;
 }
