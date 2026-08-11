@@ -3,6 +3,10 @@
     "createdAt": "2026-08-10T08:37:53Z",
     "description": "Build geometry from OpenStreetMap relations: simplify rings and export poly, GeoJSON, WKT, or SVG. Stdlib-only Python CLI and library.",
     "href": "https://github.com/deangrant/boundarykit",
+    "languages": [
+      "Python",
+      "Shell"
+    ],
     "title": "boundarykit",
     "topics": [
       "boundary",
@@ -26,6 +30,10 @@
     "createdAt": "2026-08-09T09:38:06Z",
     "description": "Fast Whisper speech-to-text for Rust with timed segments, language detection, Symphonia decode (no FFmpeg), and optional CUDA via whisper.cpp",
     "href": "https://github.com/deangrant/earshot",
+    "languages": [
+      "Rust",
+      "Shell"
+    ],
     "title": "earshot",
     "topics": [
       "asr",
@@ -48,6 +56,12 @@
     "createdAt": "2026-08-07T18:57:54Z",
     "description": "Browser JSON editor with tree, text, and table views: format, repair, transform, and validate locally",
     "href": "https://github.com/deangrant/json-editor",
+    "languages": [
+      "TypeScript",
+      "CSS",
+      "Shell",
+      "HTML"
+    ],
     "title": "json-editor",
     "topics": [
       "ajv",
@@ -65,6 +79,10 @@
     "createdAt": "2026-08-07T10:11:25Z",
     "description": "Go library to parse User-Agent strings and Client Hints into device, OS, engine, and agent details — stdlib-only.",
     "href": "https://github.com/deangrant/user-agent",
+    "languages": [
+      "Go",
+      "Shell"
+    ],
     "title": "user-agent",
     "topics": [
       "bot-detection",
@@ -86,6 +104,10 @@
     "createdAt": "2026-08-05T11:59:08Z",
     "description": "Command-line OSINT tool that checks whether a username exists on many social networks and websites.",
     "href": "https://github.com/deangrant/social-gopher",
+    "languages": [
+      "Go",
+      "Shell"
+    ],
     "title": "social-gopher",
     "topics": [
       "cli",
@@ -104,6 +126,10 @@
     "createdAt": "2026-08-04T09:22:59Z",
     "description": "Rust crate that finds stop locations in GPS and mobility trajectories (stay detection and Infomap clustering).",
     "href": "https://github.com/deangrant/infostop",
+    "languages": [
+      "Rust",
+      "Shell"
+    ],
     "title": "infostop",
     "topics": [
       "clustering",
@@ -120,6 +146,9 @@
     "createdAt": "2026-01-30T04:05:58Z",
     "description": "Reusable agent commands, hooks, rules and skills for consistent, AI-assisted coding and domain guidance across projects.",
     "href": "https://github.com/deangrant/.agents",
+    "languages": [
+      "Shell"
+    ],
     "title": ".agents",
     "topics": [
       "agents",
@@ -136,6 +165,11 @@
     "createdAt": "2025-06-06T04:56:08Z",
     "description": "A standardized email and phone number normalization and hashing utility that follows UID2 specifications for email address and phone number processing. This tool ensures consistent normalization and hash generation for identity resolution and data matching purposes.",
     "href": "https://github.com/deangrant/dii-operator",
+    "languages": [
+      "TypeScript",
+      "JavaScript",
+      "HTML"
+    ],
     "title": "dii-operator",
     "topics": [
       "base64",

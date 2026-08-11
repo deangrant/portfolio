@@ -1,5 +1,9 @@
 import { useMemo, useState } from "react";
 import { ProjectCard } from "@/pages/Home/components/ProjectCard";
+import {
+  collectAvailableTechStacks,
+  filterProjectsByTechStack,
+} from "./filterProjects";
 import styles from "./index.module.css";
 import type { ProjectsSectionProps } from "./index.types";
 import { type ProjectSortKey, sortProjects } from "./sortProjects";
@@ -12,14 +16,22 @@ const TRACK_ID = "selected-projects-track";
  */
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [sortKey, setSortKey] = useState<ProjectSortKey>("created");
-
-  const sortedProjects = useMemo(
-    () => sortProjects(projects, sortKey),
-    [projects, sortKey],
+  const [selectedTechStack, setSelectedTechStack] = useState<string | null>(
+    null,
   );
 
+  const availableTechStacks = useMemo(
+    () => collectAvailableTechStacks(projects),
+    [projects],
+  );
+
+  const visibleProjects = useMemo(() => {
+    const filtered = filterProjectsByTechStack(projects, selectedTechStack);
+    return sortProjects(filtered, sortKey);
+  }, [projects, selectedTechStack, sortKey]);
+
   const { canScrollNext, canScrollPrev, scrollBySlide, trackRef } =
-    useProjectCarousel(sortedProjects);
+    useProjectCarousel(visibleProjects);
 
   return (
     <section aria-labelledby="projects-heading" className={styles.section}>
@@ -104,8 +116,50 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           </div>
         </div>
       </div>
+      {availableTechStacks.length > 0 ? (
+        <fieldset
+          aria-label="Filter projects by tech stack"
+          className={styles.filterGroup}
+        >
+          <button
+            aria-pressed={selectedTechStack === null}
+            className={
+              selectedTechStack === null
+                ? `${styles.filterButton} ${styles.filterButtonActive}`
+                : styles.filterButton
+            }
+            onClick={() => {
+              setSelectedTechStack(null);
+            }}
+            type="button"
+          >
+            All
+          </button>
+          {availableTechStacks.map((techStack) => {
+            const isActive = selectedTechStack === techStack;
+
+            return (
+              <button
+                aria-pressed={isActive}
+                className={
+                  isActive
+                    ? `${styles.filterButton} ${styles.filterButtonActive}`
+                    : styles.filterButton
+                }
+                key={techStack}
+                onClick={() => {
+                  setSelectedTechStack(isActive ? null : techStack);
+                }}
+                type="button"
+              >
+                {techStack}
+              </button>
+            );
+          })}
+        </fieldset>
+      ) : null}
       <ul className={styles.track} id={TRACK_ID} ref={trackRef}>
-        {sortedProjects.map((project) => (
+        {visibleProjects.map((project) => (
           <li className={styles.slide} key={project.title}>
             <ProjectCard project={project} />
           </li>

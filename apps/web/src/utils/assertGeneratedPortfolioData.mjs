@@ -3,6 +3,7 @@
  *   createdAt: string;
  *   description: string;
  *   href: string;
+ *   languages: string[];
  *   title: string;
  *   topics: string[];
  *   updatedAt: string;
@@ -58,7 +59,15 @@ function assertProject(value, index) {
     throw new Error(`${label} must be an object`);
   }
 
+  const languages = value.languages;
   const topics = value.topics;
+
+  if (
+    !Array.isArray(languages) ||
+    languages.some((language) => typeof language !== "string")
+  ) {
+    throw new Error(`${label}.languages must be an array of strings`);
+  }
 
   if (
     !Array.isArray(topics) ||
@@ -71,6 +80,7 @@ function assertProject(value, index) {
     createdAt: requireNonEmptyString(value, "createdAt", label),
     description: requireNonEmptyString(value, "description", label),
     href: requireNonEmptyString(value, "href", label),
+    languages,
     title: requireNonEmptyString(value, "title", label),
     topics,
     updatedAt: requireNonEmptyString(value, "updatedAt", label),

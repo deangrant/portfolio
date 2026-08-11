@@ -35,6 +35,7 @@ const outputPath = path.resolve(
  *   createdAt: string;
  *   description: string;
  *   href: string;
+ *   languages: string[];
  *   title: string;
  *   topics: string[];
  *   updatedAt: string;
@@ -233,11 +234,77 @@ function buildTopics(repo) {
 }
 
 /**
+ * Asserts a GitHub languages API payload and returns language names ordered by
+ * bytes descending (primary language first).
+ * @param {unknown} data Candidate API JSON body.
+ * @param {string} label Path label for error messages.
+ * @returns {string[]}
+ */
+function assertGithubLanguages(data, label) {
+  if (!isRecord(data)) {
+    throw new Error(`${label} must be an object`);
+  }
+
+  /** @type {{ language: string; bytes: number }[]} */
+  const entries = [];
+
+  for (const [language, bytes] of Object.entries(data)) {
+    if (typeof language !== "string" || language.trim().length === 0) {
+      throw new Error(`${label} keys must be non-empty language names`);
+    }
+
+    if (typeof bytes !== "number" || !Number.isFinite(bytes) || bytes < 0) {
+      throw new Error(`${label}.${language} must be a non-negative number`);
+    }
+
+    entries.push({ bytes, language: language.trim() });
+  }
+
+  return entries
+    .sort((left, right) => {
+      const delta = right.bytes - left.bytes;
+
+      if (delta !== 0) {
+        return delta;
+      }
+
+      return left.language.localeCompare(right.language);
+    })
+    .map((entry) => entry.language);
+}
+
+/**
+ * Fetches language byte breakdown for one repository.
+ * @param {string} username GitHub login.
+ * @param {string} repoName Repository name.
+ * @returns {Promise<string[]>}
+ */
+async function fetchGithubLanguages(username, repoName) {
+  const url = new URL(
+    `https://api.github.com/repos/${username}/${repoName}/languages`,
+  );
+
+  const response = await fetch(url, {
+    headers: createGithubHeaders(),
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `GitHub languages request failed for ${repoName} (${response.status} ${response.statusText})`,
+    );
+  }
+
+  return assertGithubLanguages(await response.json(), `languages[${repoName}]`);
+}
+
+/**
  * Maps a GitHub repository into the portfolio Project shape.
  * @param {GithubRepo} repo Repository payload from GitHub.
+ * @param {string[]} languages Languages from the GitHub languages API.
  * @returns {Project}
  */
-function mapGithubRepoToProject(repo) {
+function mapGithubRepoToProject(repo, languages) {
   return {
     createdAt: repo.created_at,
     description:
@@ -245,6 +312,7 @@ function mapGithubRepoToProject(repo) {
         ? repo.description.trim()
         : "No description provided.",
     href: repo.html_url,
+    languages,
     title: repo.name,
     topics: buildTopics(repo),
     updatedAt: repo.pushed_at,
@@ -262,12 +330,13 @@ function toTimestamp(value) {
 }
 
 /**
- * Filters, sorts by newest created, and maps repositories for the carousel.
+ * Filters, sorts by newest created, fetches languages, and maps repositories.
+ * @param {string} username GitHub login.
  * @param {GithubRepo[]} repos Raw GitHub repositories.
- * @returns {Project[]}
+ * @returns {Promise<Project[]>}
  */
-function toProjects(repos) {
-  return repos
+async function toProjects(username, repos) {
+  const selected = repos
     .filter(isEligibleRepo)
     .sort((left, right) => {
       const delta =
@@ -279,14 +348,20 @@ function toProjects(repos) {
 
       return left.name.localeCompare(right.name);
     })
-    .slice(0, MAX_PROJECTS)
-    .map(mapGithubRepoToProject);
+    .slice(0, MAX_PROJECTS);
+
+  return Promise.all(
+    selected.map(async (repo) => {
+      const languages = await fetchGithubLanguages(username, repo.name);
+      return mapGithubRepoToProject(repo, languages);
+    }),
+  );
 }
 
 async function main() {
   const username = process.env.GITHUB_USERNAME ?? usernames.github;
   const repos = await fetchGithubRepos(username);
-  const projects = assertProjects(toProjects(repos));
+  const projects = assertProjects(await toProjects(username, repos));
 
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(projects, null, 2)}\n`, "utf8");

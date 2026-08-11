@@ -37,6 +37,9 @@ export interface Project {
   /** Direct URL to the GitHub repository. */
   href: string;
 
+  /** Languages reported by the GitHub languages API, primary first. */
+  languages: string[];
+
   /** Repository or project display name. */
   title: string;
 
