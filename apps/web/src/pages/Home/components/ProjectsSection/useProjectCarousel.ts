@@ -20,27 +20,100 @@ function getSlideStep(track: HTMLElement): number {
 }
 
 /**
+ * Reads how many slides fit in the track from the CSS custom property.
+ * @param track Scrollable carousel track element.
+ */
+function getVisibleCount(track: HTMLElement): number {
+  const raw = getComputedStyle(track).getPropertyValue("--carousel-visible");
+  const parsed = Number.parseInt(raw.trim(), 10);
+
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+}
+
+/**
+ * Returns the largest start index that still fills a full visible page.
+ * @param track Scrollable carousel track element.
+ */
+function getMaxStartIndex(track: HTMLElement): number {
+  const slideCount = track.querySelectorAll(":scope > li").length;
+  return Math.max(0, slideCount - getVisibleCount(track));
+}
+
+/**
+ * Derives the current start index from scroll position.
+ * @param track Scrollable carousel track element.
+ */
+function getStartIndex(track: HTMLElement): number {
+  const step = getSlideStep(track);
+
+  if (step === 0) {
+    return 0;
+  }
+
+  return Math.round(track.scrollLeft / step);
+}
+
+/**
+ * Clamps a start index to a full last page of visible slides.
+ * @param track Scrollable carousel track element.
+ * @param startIndex Candidate start index.
+ */
+function clampStartIndex(track: HTMLElement, startIndex: number): number {
+  const maxStartIndex = getMaxStartIndex(track);
+  return Math.min(maxStartIndex, Math.max(0, startIndex));
+}
+
+/**
  * Manages horizontal carousel scroll state and one-slide navigation.
  * @param resetKey Value that resets scroll position when it changes.
  */
 export function useProjectCarousel(resetKey: unknown) {
   const trackRef = useRef<HTMLUListElement>(null);
+  const startIndexRef = useRef(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
 
-  const updateScrollState = useCallback(() => {
+  const syncButtonState = useCallback(
+    (startIndex: number, maxStartIndex: number) => {
+      startIndexRef.current = startIndex;
+      setCanScrollPrev(startIndex > 0);
+      setCanScrollNext(startIndex < maxStartIndex);
+    },
+    [],
+  );
+
+  const scrollToStartIndex = useCallback(
+    (startIndex: number, behavior: ScrollBehavior) => {
+      const track = trackRef.current;
+
+      if (track === null) {
+        return;
+      }
+
+      const step = getSlideStep(track);
+
+      if (step === 0) {
+        return;
+      }
+
+      const maxStartIndex = getMaxStartIndex(track);
+      const nextIndex = clampStartIndex(track, startIndex);
+
+      syncButtonState(nextIndex, maxStartIndex);
+      track.scrollTo({ behavior, left: nextIndex * step });
+    },
+    [syncButtonState],
+  );
+
+  const settleToNearestPage = useCallback(() => {
     const track = trackRef.current;
 
     if (track === null) {
       return;
     }
 
-    const maxScrollLeft = track.scrollWidth - track.clientWidth;
-    const { scrollLeft } = track;
-
-    setCanScrollPrev(scrollLeft > 1);
-    setCanScrollNext(scrollLeft < maxScrollLeft - 1);
-  }, []);
+    scrollToStartIndex(getStartIndex(track), "smooth");
+  }, [scrollToStartIndex]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -49,36 +122,44 @@ export function useProjectCarousel(resetKey: unknown) {
       return;
     }
 
-    track.scrollLeft = 0;
-    updateScrollState();
-    track.addEventListener("scroll", updateScrollState, { passive: true });
+    startIndexRef.current = 0;
+    scrollToStartIndex(0, "auto");
+
+    const clampScrollOverflow = () => {
+      const step = getSlideStep(track);
+
+      if (step === 0) {
+        return;
+      }
+
+      const maxScrollLeft = getMaxStartIndex(track) * step;
+
+      if (track.scrollLeft > maxScrollLeft) {
+        track.scrollLeft = maxScrollLeft;
+      }
+    };
+
+    track.addEventListener("scroll", clampScrollOverflow, { passive: true });
+    track.addEventListener("scrollend", settleToNearestPage);
 
     const observer = new ResizeObserver(() => {
-      updateScrollState();
+      scrollToStartIndex(startIndexRef.current, "auto");
     });
     observer.observe(track);
 
     return () => {
-      track.removeEventListener("scroll", updateScrollState);
+      track.removeEventListener("scroll", clampScrollOverflow);
+      track.removeEventListener("scrollend", settleToNearestPage);
       observer.disconnect();
     };
-  }, [resetKey, updateScrollState]);
+  }, [resetKey, scrollToStartIndex, settleToNearestPage]);
 
-  const scrollBySlide = useCallback((direction: -1 | 1) => {
-    const track = trackRef.current;
-
-    if (track === null) {
-      return;
-    }
-
-    const step = getSlideStep(track);
-
-    if (step === 0) {
-      return;
-    }
-
-    track.scrollBy({ behavior: "smooth", left: direction * step });
-  }, []);
+  const scrollBySlide = useCallback(
+    (direction: -1 | 1) => {
+      scrollToStartIndex(startIndexRef.current + direction, "smooth");
+    },
+    [scrollToStartIndex],
+  );
 
   return {
     canScrollNext,

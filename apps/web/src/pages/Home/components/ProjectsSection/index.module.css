@@ -137,7 +137,6 @@
   display: flex;
   gap: var(--carousel-gap);
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none;
   list-style: none;
@@ -152,7 +151,6 @@
 .slide {
   flex: 0 0 100%;
   min-width: 0;
-  scroll-snap-align: start;
 }
 
 @media (min-width: 640px) {
