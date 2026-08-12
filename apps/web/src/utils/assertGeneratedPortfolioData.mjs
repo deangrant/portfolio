@@ -21,6 +21,15 @@
  */
 
 /**
+ * @typedef {{
+ *   company: string;
+ *   endYear: number | null;
+ *   startYear: number;
+ *   title: string;
+ * }} EmploymentRole
+ */
+
+/**
  * Returns whether a value is a non-null object record.
  * @param {unknown} value Candidate value.
  * @returns {value is Record<string, unknown>}
@@ -133,4 +142,84 @@ export function assertArticles(data) {
   }
 
   return data.map((entry, index) => assertArticle(entry, index));
+}
+
+/**
+ * Reads a required integer calendar year from a record.
+ * @param {Record<string, unknown>} record Object to read from.
+ * @param {string} field Field name.
+ * @param {string} label Path label for error messages.
+ * @returns {number}
+ */
+function requireYear(record, field, label) {
+  const value = record[field];
+
+  if (typeof value !== "number" || !Number.isInteger(value)) {
+    throw new Error(`${label}.${field} must be an integer year`);
+  }
+
+  return value;
+}
+
+/**
+ * Asserts one curated employment role entry.
+ * @param {unknown} value Candidate employment payload.
+ * @param {number} index Array index for error messages.
+ * @returns {EmploymentRole}
+ */
+function assertEmploymentRole(value, index) {
+  const label = `employment[${index}]`;
+
+  if (!isRecord(value)) {
+    throw new Error(`${label} must be an object`);
+  }
+
+  const startYear = requireYear(value, "startYear", label);
+  const endYearValue = value.endYear;
+  /** @type {number | null} */
+  let endYear;
+
+  if (endYearValue === null) {
+    endYear = null;
+  } else if (
+    typeof endYearValue === "number" &&
+    Number.isInteger(endYearValue)
+  ) {
+    endYear = endYearValue;
+  } else {
+    throw new Error(`${label}.endYear must be an integer year or null`);
+  }
+
+  if (endYear !== null && endYear < startYear) {
+    throw new Error(`${label}.endYear must be >= startYear`);
+  }
+
+  return {
+    company: requireNonEmptyString(value, "company", label),
+    endYear,
+    startYear,
+    title: requireNonEmptyString(value, "title", label),
+  };
+}
+
+/**
+ * Validates curated employment JSON before the UI consumes it.
+ * @param {unknown} data Candidate employment list.
+ * @returns {EmploymentRole[]}
+ */
+export function assertEmployment(data) {
+  if (!Array.isArray(data)) {
+    throw new Error("employment must be an array");
+  }
+
+  const roles = data.map((entry, index) => assertEmploymentRole(entry, index));
+  const currentCount = roles.filter((role) => role.endYear === null).length;
+
+  if (roles.length > 0 && currentCount !== 1) {
+    throw new Error(
+      "employment must include exactly one role with endYear null (Present)",
+    );
+  }
+
+  return roles;
 }
