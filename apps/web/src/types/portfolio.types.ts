@@ -71,6 +71,26 @@ export interface Article {
 }
 
 /**
+ * A curated employment role in the experience timeline.
+ */
+export interface EmploymentRole {
+  /** Employer or organization name. */
+  company: string;
+
+  /**
+   * Inclusive end calendar year, or `null` for the current role
+   * (shown as Present).
+   */
+  endYear: number | null;
+
+  /** Inclusive start calendar year. */
+  startYear: number;
+
+  /** Job title at the company. */
+  title: string;
+}
+
+/**
  * Static portfolio content consumed by the Home page sections.
  */
 export interface PortfolioContent {

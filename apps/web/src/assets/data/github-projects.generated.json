@@ -1,5 +1,29 @@
 [
   {
+    "createdAt": "2026-08-11T11:20:33Z",
+    "description": "Store-based rate limiting for Go: five algorithms, in-memory/noop core, optional Redis and Postgres stores, and net/http middleware.",
+    "href": "https://github.com/deangrant/ratelimit-gopher",
+    "languages": [
+      "Go",
+      "Shell"
+    ],
+    "title": "ratelimit-gopher",
+    "topics": [
+      "go",
+      "golang",
+      "http-middleware",
+      "leaky-bucket",
+      "library",
+      "postgresql",
+      "rate-limiter",
+      "rate-limiting",
+      "redis",
+      "sliding-window",
+      "token-bucket"
+    ],
+    "updatedAt": "2026-08-11T13:52:18Z"
+  },
+  {
     "createdAt": "2026-08-10T08:37:53Z",
     "description": "Build geometry from OpenStreetMap relations: simplify rings and export poly, GeoJSON, WKT, or SVG. Stdlib-only Python CLI and library.",
     "href": "https://github.com/deangrant/boundarykit",
@@ -27,8 +51,34 @@
     "updatedAt": "2026-08-10T09:03:36Z"
   },
   {
+    "createdAt": "2026-08-09T10:38:16Z",
+    "description": "Dean Grant’s portfolio. React/Vite site with build-time GitHub and Substack content.",
+    "href": "https://github.com/deangrant/portfolio",
+    "languages": [
+      "TypeScript",
+      "JavaScript",
+      "CSS",
+      "Shell",
+      "HTML"
+    ],
+    "title": "portfolio",
+    "topics": [
+      "biome",
+      "github",
+      "monorepo",
+      "personal-website",
+      "pnpm",
+      "portfolio",
+      "react",
+      "substack",
+      "typescript",
+      "vite"
+    ],
+    "updatedAt": "2026-08-12T15:30:21Z"
+  },
+  {
     "createdAt": "2026-08-09T09:38:06Z",
-    "description": "Fast Whisper speech-to-text for Rust with timed segments, language detection, Symphonia decode (no FFmpeg), and optional CUDA via whisper.cpp",
+    "description": "Fast Whisper speech-to-text for Rust with timed segments, language detection, Symphonia decode (no FFmpeg), and optional CUDA via whisper.cpp.",
     "href": "https://github.com/deangrant/earshot",
     "languages": [
       "Rust",
@@ -54,7 +104,7 @@
   },
   {
     "createdAt": "2026-08-07T18:57:54Z",
-    "description": "Browser JSON editor with tree, text, and table views: format, repair, transform, and validate locally",
+    "description": "Browser JSON editor with tree, text, and table views: format, repair, transform, and validate locally.",
     "href": "https://github.com/deangrant/json-editor",
     "languages": [
       "TypeScript",
@@ -143,23 +193,31 @@
     "updatedAt": "2026-08-09T08:02:11Z"
   },
   {
-    "createdAt": "2026-01-30T04:05:58Z",
-    "description": "Reusable agent commands, hooks, rules and skills for consistent, AI-assisted coding and domain guidance across projects.",
-    "href": "https://github.com/deangrant/.agents",
+    "createdAt": "2026-07-17T14:28:31Z",
+    "description": "Maven multi-module collection of custom Keycloak SPI provider JARs (Java 21). Providers compile against Keycloak with provided scope and ship as deployable modules.",
+    "href": "https://github.com/deangrant/keycloak-providers",
     "languages": [
-      "Shell"
+      "Java",
+      "Python"
     ],
-    "title": ".agents",
+    "title": "keycloak-providers",
     "topics": [
-      "agents",
-      "cursor",
-      "hooks",
-      "mcp",
-      "rules",
-      "skills",
-      "tools"
+      "authentication",
+      "event-listener",
+      "identity",
+      "java",
+      "java-21",
+      "keycloak",
+      "keycloak-listener",
+      "keycloak-spi",
+      "last-login",
+      "maven",
+      "openid-connect",
+      "spi",
+      "sso",
+      "user-attributes"
     ],
-    "updatedAt": "2026-08-02T09:51:54Z"
+    "updatedAt": "2026-08-12T15:12:12Z"
   },
   {
     "createdAt": "2025-06-06T04:56:08Z",
@@ -191,6 +249,6 @@
       "uid2",
       "user-identification"
     ],
-    "updatedAt": "2026-07-30T15:31:13Z"
+    "updatedAt": "2026-08-12T05:25:34Z"
   }
 ]
