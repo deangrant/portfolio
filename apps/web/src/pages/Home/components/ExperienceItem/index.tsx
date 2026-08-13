@@ -12,7 +12,7 @@ function formatYearRange(startYear: number, endYear: number | null): string {
 }
 
 /**
- * Renders one employment role as a single-line experience entry.
+ * Renders one employment role on the vertical experience timeline.
  */
 export function ExperienceItem({ role }: ExperienceItemProps) {
   const yearRange = formatYearRange(role.startYear, role.endYear);
@@ -23,14 +23,15 @@ export function ExperienceItem({ role }: ExperienceItemProps) {
 
   return (
     <li className={styles.item}>
-      <div className={styles.primary}>
+      <span aria-hidden="true" className={styles.marker} />
+      <div className={styles.content}>
         <h3 className={styles.title}>{role.title}</h3>
         <span aria-hidden="true" className={styles.separator}>
           ·
         </span>
         <span className={styles.company}>{role.company}</span>
       </div>
-      <p className={styles.meta}>
+      <p className={styles.years}>
         <time dateTime={dateTime}>{yearRange}</time>
       </p>
     </li>
