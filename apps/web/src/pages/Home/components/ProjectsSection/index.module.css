@@ -155,9 +155,12 @@
 .track {
   --carousel-gap: var(--space-4);
   --carousel-visible: 1;
+  --carousel-track-height: 22rem;
 
   display: flex;
+  align-items: stretch;
   gap: var(--carousel-gap);
+  height: var(--carousel-track-height);
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
@@ -171,8 +174,11 @@
 }
 
 .slide {
+  display: flex;
   flex: 0 0 100%;
+  flex-direction: column;
   min-width: 0;
+  min-height: 0;
 }
 
 @media (min-width: 640px) {
