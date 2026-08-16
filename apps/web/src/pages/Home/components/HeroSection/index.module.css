@@ -7,14 +7,15 @@
 
 .name {
   font-size: clamp(2.25rem, 6vw, 3rem);
-  font-weight: 560;
-  letter-spacing: -0.04em;
+  font-weight: 600;
+  letter-spacing: -0.03em;
   line-height: 1.1;
 }
 
 .tagline {
   color: var(--color-muted);
   font-size: 1rem;
-  line-height: 1.65;
+  font-weight: 400;
+  line-height: 1.5;
   white-space: pre-line;
 }
