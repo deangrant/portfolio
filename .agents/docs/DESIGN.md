@@ -2,8 +2,8 @@
 version: alpha
 name: Portfolio
 description: >-
-  Neutral dark-first personal portfolio with light theme support, system sans,
-  flat bordered surfaces, and calm fade-up section entrances.
+  Neutral dark-first personal portfolio with light theme support, Sora
+  typography, flat bordered surfaces, and calm fade-up section entrances.
 colors:
   bg: "#0a0a0a"
   fg: "#f5f5f5"
@@ -21,42 +21,42 @@ colors:
   focus-light: "#171717"
 typography:
   body:
-    fontFamily: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif
+    fontFamily: Sora, Avenir Next, Segoe UI, sans-serif
     fontSize: 1rem
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.45
   name:
-    fontFamily: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif
+    fontFamily: Sora, Avenir Next, Segoe UI, sans-serif
     fontSize: clamp(2.25rem, 6vw, 3rem)
-    fontWeight: 560
+    fontWeight: 600
     lineHeight: 1.1
-    letterSpacing: -0.04em
+    letterSpacing: -0.03em
   tagline:
-    fontFamily: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif
+    fontFamily: Sora, Avenir Next, Segoe UI, sans-serif
     fontSize: 1rem
     fontWeight: 400
-    lineHeight: 1.65
+    lineHeight: 1.5
   section-label:
-    fontFamily: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif
+    fontFamily: Sora, Avenir Next, Segoe UI, sans-serif
     fontSize: 0.8125rem
-    fontWeight: 500
+    fontWeight: 600
     lineHeight: 1.2
     letterSpacing: 0.08em
   card-title:
-    fontFamily: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif
+    fontFamily: Sora, Avenir Next, Segoe UI, sans-serif
     fontSize: 1.0625rem
-    fontWeight: 560
+    fontWeight: 600
     lineHeight: 1.3
     letterSpacing: -0.02em
   card-body:
-    fontFamily: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif
+    fontFamily: Sora, Avenir Next, Segoe UI, sans-serif
     fontSize: 0.9375rem
     fontWeight: 400
     lineHeight: 1.5
   control-label:
-    fontFamily: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif
+    fontFamily: Sora, Avenir Next, Segoe UI, sans-serif
     fontSize: 0.75rem
-    fontWeight: 500
+    fontWeight: 600
     lineHeight: 1.2
     letterSpacing: 0.04em
 rounded:
@@ -146,7 +146,7 @@ components:
 Portfolio is a calm, editorial personal site for Dean Grant.
 Default presentation is **dark**; visitors can switch to light via `data-theme`.
 The personality is neutral near-black / near-white surfaces, quiet borders, and
-system UI sans — focused on readable copy and a scannable project carousel,
+Sora typography — focused on readable copy and a scannable project carousel,
 not a colorful marketing dashboard.
 
 Canonical CSS tokens live in
@@ -173,26 +173,30 @@ One neutral scale, remapped per theme. There is no saturated brand accent today.
 - **Surfaces:** page `bg` under bordered `surface` cards and chrome.
 - **Focus:** `:focus-visible` uses a 2px `focus` outline with 3px offset.
 
-Do not introduce a second saturated brand color, purple gradients, or glow
-accents unless the token set is deliberately redesigned.
+Do not introduce a second saturated brand color or purple/blue accent glows.
+A fixed dual radial wash on the page background may use low-opacity mixes of
+existing `fg` / `muted` tokens only.
 
 ## Typography
 
-One family stack via `--font-sans`:
+One family stack via `--font-sans`, loaded with `@fontsource/sora` (weights
+400 and 600):
 
-`ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`
+`"Sora", "Avenir Next", "Segoe UI", sans-serif`
 
 Roles in use:
 
-- **Body** — `1rem` / `1.6` line-height on `body`.
-- **Name (hero)** — `clamp(2.25rem, 6vw, 3rem)`, weight `560`, tight tracking.
-- **Tagline** — `1rem`, muted, slightly looser line-height (`1.65`); full
-  content width (same column as the name, no max-width); multi-paragraph copy
-  via preserved line breaks (`white-space: pre-line`).
-- **Section label** — small uppercase (`0.8125rem`), muted, wide tracking.
-- **Card title / body** — slightly tight titles; muted clamped descriptions.
+- **Body** — `1rem` / `1.45` line-height on `body`.
+- **Name (hero)** — `clamp(2.25rem, 6vw, 3rem)`, weight `600`, tracking `-0.03em`.
+- **Tagline** — `1rem`, muted, line-height `1.5`; full content width (same
+  column as the name, no max-width); multi-paragraph copy via preserved line
+  breaks (`white-space: pre-line`).
+- **Section label** — small uppercase (`0.8125rem`), weight `600`, muted, wide
+  tracking.
+- **Card title / body** — titles weight `600`; muted clamped descriptions.
+- **Control label** — small uppercase (`0.75rem`), weight `600`.
 
-Avoid decorative display fonts or a second mono stack unless content needs it.
+Do not add a second display or mono stack unless content needs it.
 
 ## Layout
 
