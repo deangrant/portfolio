@@ -2,7 +2,7 @@
   "author": "Dean Grant",
   "description": "",
   "devDependencies": {
-    "@biomejs/biome": "2.5.4",
+    "@biomejs/biome": "2.5.5",
     "react-doctor": "0.8.1"
   },
   "engines": {
