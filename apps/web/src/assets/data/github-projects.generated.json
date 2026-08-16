@@ -1,5 +1,63 @@
 [
   {
+    "createdAt": "2026-08-13T19:47:41Z",
+    "description": "Explore live OpenStreetMap places. Filter by industry, brand, name, and geography, map results with Mapbox, and export geometry as CSV via a Node BFF over Nominatim and Overpass.",
+    "href": "https://github.com/deangrant/places",
+    "languages": [
+      "TypeScript",
+      "CSS",
+      "Shell",
+      "JavaScript",
+      "HTML"
+    ],
+    "title": "places",
+    "topics": [
+      "geospatial",
+      "mapbox",
+      "multipolygon",
+      "nodejs",
+      "nominatim",
+      "openstreetmap",
+      "osm",
+      "overpass",
+      "places",
+      "poi",
+      "point",
+      "polygon",
+      "react",
+      "typescript",
+      "vite",
+      "wkt"
+    ],
+    "updatedAt": "2026-08-15T18:19:56Z"
+  },
+  {
+    "createdAt": "2026-08-13T11:46:31Z",
+    "description": "Rust OpenStreetMap geocoder for regional extracts. Imports .osm.pbf into local mmap indexes and serves forward, reverse, batch, and bulk reverse via CLI and HTTP, with no separate database.",
+    "href": "https://github.com/deangrant/hexplace",
+    "languages": [
+      "Rust",
+      "Shell"
+    ],
+    "title": "hexplace",
+    "topics": [
+      "axum",
+      "cli",
+      "geocoder",
+      "geocoding",
+      "geospatial",
+      "h3",
+      "http-api",
+      "mmap",
+      "openstreemap",
+      "osm",
+      "reverse-geocoding",
+      "rust",
+      "tantivy"
+    ],
+    "updatedAt": "2026-08-13T20:02:22Z"
+  },
+  {
     "createdAt": "2026-08-11T11:20:33Z",
     "description": "Store-based rate limiting for Go: five algorithms, in-memory/noop core, optional Redis and Postgres stores, and net/http middleware.",
     "href": "https://github.com/deangrant/ratelimit-gopher",
@@ -22,6 +80,28 @@
       "token-bucket"
     ],
     "updatedAt": "2026-08-11T13:52:18Z"
+  },
+  {
+    "createdAt": "2026-08-10T14:19:32Z",
+    "description": "Std-first Rust library that attributes GPS trajectory pings to POI visits via cleaning, clustering, joining, and GBDT ranking.",
+    "href": "https://github.com/deangrant/visit-attribution",
+    "languages": [
+      "Rust",
+      "Shell"
+    ],
+    "title": "visit-attribution",
+    "topics": [
+      "geospatial",
+      "gps",
+      "gradient-boosting",
+      "machine-learning",
+      "mobility",
+      "poi",
+      "rust",
+      "trajectory",
+      "visit-attribution"
+    ],
+    "updatedAt": "2026-08-10T14:33:01Z"
   },
   {
     "createdAt": "2026-08-10T08:37:53Z",
@@ -48,7 +128,7 @@
       "svg",
       "wkt"
     ],
-    "updatedAt": "2026-08-10T09:03:36Z"
+    "updatedAt": "2026-08-16T06:35:46Z"
   },
   {
     "createdAt": "2026-08-09T10:38:16Z",
@@ -74,7 +154,7 @@
       "typescript",
       "vite"
     ],
-    "updatedAt": "2026-08-12T15:30:21Z"
+    "updatedAt": "2026-08-16T07:09:51Z"
   },
   {
     "createdAt": "2026-08-09T09:38:06Z",
@@ -100,7 +180,7 @@
       "whisper",
       "whisper-cpp"
     ],
-    "updatedAt": "2026-08-09T09:39:41Z"
+    "updatedAt": "2026-08-15T07:52:27Z"
   },
   {
     "createdAt": "2026-08-07T18:57:54Z",
@@ -123,7 +203,7 @@
       "typescript",
       "vite"
     ],
-    "updatedAt": "2026-08-10T15:20:43Z"
+    "updatedAt": "2026-08-15T08:15:16Z"
   },
   {
     "createdAt": "2026-08-07T10:11:25Z",
@@ -220,12 +300,31 @@
     "updatedAt": "2026-08-12T15:12:12Z"
   },
   {
+    "createdAt": "2026-01-30T04:05:58Z",
+    "description": "Reusable agent commands, hooks, rules and skills for consistent, AI-assisted coding and domain guidance across projects.",
+    "href": "https://github.com/deangrant/agents",
+    "languages": [
+      "Shell"
+    ],
+    "title": "agents",
+    "topics": [
+      "agent-commands",
+      "agent-hooks",
+      "agent-skills",
+      "cursor-ai",
+      "cursor-rules",
+      "engineering",
+      "prompt-engineering"
+    ],
+    "updatedAt": "2026-08-13T12:54:17Z"
+  },
+  {
     "createdAt": "2025-06-06T04:56:08Z",
     "description": "A standardized email and phone number normalization and hashing utility that follows UID2 specifications for email address and phone number processing. This tool ensures consistent normalization and hash generation for identity resolution and data matching purposes.",
     "href": "https://github.com/deangrant/dii-operator",
     "languages": [
       "TypeScript",
-      "JavaScript",
+      "Shell",
       "HTML"
     ],
     "title": "dii-operator",
@@ -249,6 +348,6 @@
       "uid2",
       "user-identification"
     ],
-    "updatedAt": "2026-08-12T05:25:34Z"
+    "updatedAt": "2026-08-16T06:32:54Z"
   }
 ]
