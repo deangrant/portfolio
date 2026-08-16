@@ -6,7 +6,7 @@ import { assertProjects } from "../src/utils/assertGeneratedPortfolioData.mjs";
 
 const FETCH_TIMEOUT_MS = 15_000;
 const MAX_PAGES = 10;
-const MAX_PROJECTS = 12;
+const MAX_PROJECTS = 50;
 const PER_PAGE = 100;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
