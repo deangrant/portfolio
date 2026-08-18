@@ -1,34 +1,25 @@
+import { execFile } from "node:child_process";
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 import usernames from "../src/assets/usernames.json" with { type: "json" };
 import { assertArticles } from "../src/utils/assertGeneratedPortfolioData.mjs";
 
+const execFileAsync = promisify(execFile);
+
 const FETCH_TIMEOUT_MS = 15_000;
 const MAX_ARTICLES = 50;
-const PAGE_SIZE = 50;
 const WORDS_PER_MINUTE = 200;
+const BROWSER_USER_AGENT =
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
+const RSS_ACCEPT = "application/rss+xml, application/xml;q=0.9, */*;q=0.8";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputPath = path.resolve(
   __dirname,
   "../src/assets/data/substack-articles.generated.json",
 );
-
-/**
- * @typedef {{
- *   audience?: string;
- *   canonical_url?: string;
- *   description?: string | null;
- *   is_published?: boolean;
- *   post_date?: string;
- *   slug?: string;
- *   subtitle?: string | null;
- *   title?: string;
- *   type?: string;
- *   wordcount?: number;
- * }} SubstackPost
- */
 
 /**
  * @typedef {{
@@ -41,17 +32,6 @@ const outputPath = path.resolve(
  */
 
 /**
- * Builds request headers for the Substack posts API.
- * @returns {HeadersInit}
- */
-function createSubstackHeaders() {
-  return {
-    Accept: "application/json",
-    "User-Agent": "portfolio-web-fetch-substack-articles",
-  };
-}
-
-/**
  * Returns whether a value is a non-null object record.
  * @param {unknown} value Candidate value.
  * @returns {value is Record<string, unknown>}
@@ -61,53 +41,72 @@ function isRecord(value) {
 }
 
 /**
- * Validates one Substack posts page payload.
- * @param {unknown} data Candidate API JSON body.
- * @param {number} offset Posts page offset for error messages.
- * @returns {SubstackPost[]}
+ * Returns whether an execFile failure means curl is not installed.
+ * @param {unknown} error Candidate error.
+ * @returns {boolean}
  */
-function assertSubstackPosts(data, offset) {
-  if (!Array.isArray(data)) {
-    throw new Error(
-      `Substack posts response at offset ${offset} must be an array`,
-    );
-  }
-
-  return data.map((entry, index) => {
-    if (!isRecord(entry)) {
-      throw new Error(
-        `Substack posts response at offset ${offset}[${index}] must be an object`,
-      );
-    }
-
-    return /** @type {SubstackPost} */ (entry);
-  });
+function isMissingExecutable(error) {
+  return isRecord(error) && error.code === "ENOENT";
 }
 
 /**
- * Fetches one page of posts for a Substack publication.
- * @param {string} username Publication subdomain / username.
- * @param {number} offset Posts page offset.
- * @returns {Promise<SubstackPost[]>}
+ * Reads a curl failure message from stderr or the error text.
+ * @param {unknown} error Candidate error.
+ * @returns {string}
  */
-async function fetchPostsPage(username, offset) {
-  const url = new URL(`https://${username}.substack.com/api/v1/posts`);
-  url.searchParams.set("limit", String(PAGE_SIZE));
-  url.searchParams.set("offset", String(offset));
+function curlErrorDetail(error) {
+  if (isRecord(error) && typeof error.stderr === "string") {
+    const stderr = error.stderr.trim();
 
-  const response = await fetch(url, {
-    headers: createSubstackHeaders(),
-    redirect: "follow",
-    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Substack posts request failed (${response.status} ${response.statusText})`,
-    );
+    if (stderr.length > 0) {
+      return stderr;
+    }
   }
 
-  return assertSubstackPosts(await response.json(), offset);
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return String(error);
+}
+
+/**
+ * Fetches a URL with curl so Cloudflare TLS fingerprinting is less likely to
+ * block GitHub Actions datacenter IPs.
+ * @param {string} url Absolute URL to fetch.
+ * @returns {Promise<string>}
+ */
+async function curlGet(url) {
+  try {
+    const { stdout } = await execFileAsync(
+      "curl",
+      [
+        "-sS",
+        "-L",
+        "--fail",
+        "--max-time",
+        String(FETCH_TIMEOUT_MS / 1000),
+        "-A",
+        BROWSER_USER_AGENT,
+        "-H",
+        `Accept: ${RSS_ACCEPT}`,
+        url,
+      ],
+      {
+        encoding: "utf8",
+        maxBuffer: 10 * 1024 * 1024,
+        timeout: FETCH_TIMEOUT_MS + 1000,
+      },
+    );
+
+    return stdout;
+  } catch (error) {
+    if (isMissingExecutable(error)) {
+      throw new Error("curl is not available; cannot fetch Substack RSS");
+    }
+
+    throw new Error(`Substack RSS request failed (${curlErrorDetail(error)})`);
+  }
 }
 
 /**
@@ -143,36 +142,8 @@ async function hasNonEmptyArticlesFile(filePath) {
 }
 
 /**
- * Fetches newsletter posts up to the hard article cap.
- * @param {string} username Publication subdomain / username.
- * @returns {Promise<SubstackPost[]>}
- */
-async function fetchSubstackPosts(username) {
-  /** @type {SubstackPost[]} */
-  const posts = [];
-  let offset = 0;
-
-  while (posts.length < MAX_ARTICLES) {
-    const page = await fetchPostsPage(username, offset);
-
-    if (page.length === 0) {
-      break;
-    }
-
-    posts.push(...page);
-    offset += page.length;
-
-    if (page.length < PAGE_SIZE) {
-      break;
-    }
-  }
-
-  return posts.slice(0, MAX_ARTICLES);
-}
-
-/**
  * Formats a Substack post date as `YYYY-MM-DD`.
- * @param {string | undefined} postDate ISO timestamp from Substack.
+ * @param {string | undefined} postDate ISO timestamp or RSS pubDate.
  * @returns {string | null}
  */
 function toPublishedAt(postDate) {
@@ -191,7 +162,7 @@ function toPublishedAt(postDate) {
 
 /**
  * Builds a human-readable reading-time label from word count.
- * @param {number | undefined} wordcount Substack word count.
+ * @param {number | undefined} wordcount Estimated or reported word count.
  * @returns {string}
  */
 function toReadTime(wordcount) {
@@ -205,35 +176,90 @@ function toReadTime(wordcount) {
 }
 
 /**
- * Picks the best available summary string for a post.
- * @param {SubstackPost} post Posts API payload.
+ * Decodes a Substack RSS text node, including CDATA and basic XML entities.
+ * @param {string} value Raw element inner XML.
  * @returns {string}
  */
-function toSummary(post) {
-  const subtitle = post.subtitle?.trim() ?? "";
+function decodeXmlText(value) {
+  const withoutCdata = value.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1");
 
-  if (subtitle.length > 0) {
-    return subtitle;
-  }
-
-  const description = post.description?.trim() ?? "";
-
-  if (description.length > 0) {
-    return description;
-  }
-
-  return "No summary provided.";
+  return withoutCdata
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&apos;", "'")
+    .replaceAll("&amp;", "&")
+    .trim();
 }
 
 /**
- * Maps a Substack post into the portfolio Article shape.
- * @param {SubstackPost} post Posts API payload.
+ * Reads the inner text of the first matching XML tag in a block.
+ * @param {string} block RSS item or feed fragment.
+ * @param {string} tag Element name, including an optional namespace prefix.
+ * @returns {string}
+ */
+function extractTag(block, tag) {
+  const escaped = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pattern = new RegExp(
+    `<${escaped}(?:\\s[^>]*)?>([\\s\\S]*?)</${escaped}>`,
+    "i",
+  );
+  const match = block.match(pattern);
+
+  return match === null ? "" : decodeXmlText(match[1]);
+}
+
+/**
+ * Splits a Substack RSS document into raw `<item>` inner XML blocks.
+ * @param {string} rss RSS XML document.
+ * @returns {string[]}
+ */
+function extractRssItems(rss) {
+  /** @type {string[]} */
+  const items = [];
+  const pattern = /<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi;
+  let match = pattern.exec(rss);
+
+  while (match !== null) {
+    items.push(match[1]);
+    match = pattern.exec(rss);
+  }
+
+  return items;
+}
+
+/**
+ * Estimates word count from HTML by stripping tags and collapsing whitespace.
+ * @param {string} html RSS `content:encoded` HTML.
+ * @returns {number}
+ */
+function countWordsFromHtml(html) {
+  const text = html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (text.length === 0) {
+    return 0;
+  }
+
+  return text.split(" ").length;
+}
+
+/**
+ * Maps one RSS item into the portfolio Article shape.
+ * @param {string} itemXml Inner XML of an `<item>` element.
  * @returns {Article | null}
  */
-function mapSubstackPostToArticle(post) {
-  const title = post.title?.trim() ?? "";
-  const href = post.canonical_url?.trim() ?? "";
-  const publishedAt = toPublishedAt(post.post_date);
+function mapRssItemToArticle(itemXml) {
+  const title = extractTag(itemXml, "title");
+  const href = extractTag(itemXml, "link");
+  const publishedAt = toPublishedAt(extractTag(itemXml, "pubDate"));
+  const summary = extractTag(itemXml, "description");
+  const content = extractTag(itemXml, "content:encoded");
 
   if (title.length === 0 || href.length === 0 || publishedAt === null) {
     return null;
@@ -242,44 +268,59 @@ function mapSubstackPostToArticle(post) {
   return {
     href,
     publishedAt,
-    readTime: toReadTime(post.wordcount),
-    summary: toSummary(post),
+    readTime: toReadTime(countWordsFromHtml(content)),
+    summary: summary.length > 0 ? summary : "No summary provided.",
     title,
   };
 }
 
 /**
- * Filters published newsletter posts and maps them for the writing section.
- * @param {SubstackPost[]} posts Raw posts API payloads.
+ * Maps a Substack RSS document into portfolio articles.
+ * @param {string} rss RSS XML document.
  * @returns {Article[]}
  */
-function toArticles(posts) {
+function toArticlesFromRss(rss) {
   /** @type {Article[]} */
   const articles = [];
 
-  for (const post of posts) {
-    if (post.type !== "newsletter") {
-      continue;
-    }
-
-    if (post.is_published === false) {
-      continue;
-    }
-
-    const article = mapSubstackPostToArticle(post);
+  for (const item of extractRssItems(rss)) {
+    const article = mapRssItemToArticle(item);
 
     if (article !== null) {
       articles.push(article);
+    }
+
+    if (articles.length >= MAX_ARTICLES) {
+      break;
     }
   }
 
   return articles;
 }
 
+/**
+ * Fetches newsletter posts from the public Substack RSS feed via curl.
+ * @param {string} username Publication subdomain / username.
+ * @returns {Promise<Article[]>}
+ */
+async function fetchArticlesFromRss(username) {
+  const rss = await curlGet(`https://${username}.substack.com/feed`);
+  const articles = toArticlesFromRss(rss);
+
+  if (articles.length === 0) {
+    throw new Error(`Substack RSS feed contained no articles for ${username}`);
+  }
+
+  console.log(
+    `Fetched ${articles.length} articles for ${username} from Substack RSS`,
+  );
+
+  return articles;
+}
+
 async function main() {
   const username = process.env.SUBSTACK_USERNAME ?? usernames.substack;
-  const posts = await fetchSubstackPosts(username);
-  const articles = assertArticles(toArticles(posts));
+  const articles = assertArticles(await fetchArticlesFromRss(username));
 
   if (articles.length === 0) {
     throw new Error(`No newsletter articles found for ${username}`);
