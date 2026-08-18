@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.4/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -35,6 +35,7 @@
       "preset": "recommended"
     }
   },
+  "root": true,
   "vcs": {
     "clientKind": "git",
     "enabled": true,

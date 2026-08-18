@@ -1,5 +1,12 @@
 [
   {
+    "href": "https://deangrant.substack.com/p/hexplace",
+    "publishedAt": "2026-08-17",
+    "readTime": "7 min read",
+    "summary": "An in-process geocoder for regional OpenStreetMap extracts",
+    "title": "Hexplace"
+  },
+  {
     "href": "https://deangrant.substack.com/p/why-i-built-social-gopher",
     "publishedAt": "2026-08-09",
     "readTime": "6 min read",
