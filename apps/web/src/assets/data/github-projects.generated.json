@@ -1,5 +1,30 @@
 [
   {
+    "createdAt": "2026-08-22T18:56:23Z",
+    "description": "Browser-based reachability map: search a start location, choose travel mode and time limits, visualize Mapbox isochrones, and export contours as GeoJSON or WKT.",
+    "href": "https://github.com/deangrant/isochrone",
+    "languages": [
+      "TypeScript",
+      "CSS",
+      "JavaScript",
+      "Shell",
+      "HTML"
+    ],
+    "title": "isochrone",
+    "topics": [
+      "geocoding",
+      "geojson",
+      "gis",
+      "isochrone",
+      "mapbox",
+      "mapbox-gl",
+      "reachability",
+      "travel-time",
+      "wkt"
+    ],
+    "updatedAt": "2026-08-30T11:27:40Z"
+  },
+  {
     "createdAt": "2026-08-13T19:47:41Z",
     "description": "Explore live OpenStreetMap places. Filter by industry, brand, name, and geography, map results with Mapbox, and export geometry as CSV via a Node BFF over Nominatim and Overpass.",
     "href": "https://github.com/deangrant/places",
@@ -29,7 +54,7 @@
       "vite",
       "wkt"
     ],
-    "updatedAt": "2026-08-18T07:40:43Z"
+    "updatedAt": "2026-08-23T15:05:38Z"
   },
   {
     "createdAt": "2026-08-13T11:46:31Z",
@@ -154,7 +179,7 @@
       "typescript",
       "vite"
     ],
-    "updatedAt": "2026-08-16T18:55:01Z"
+    "updatedAt": "2026-08-23T18:37:46Z"
   },
   {
     "createdAt": "2026-08-09T09:38:06Z",
@@ -203,7 +228,7 @@
       "typescript",
       "vite"
     ],
-    "updatedAt": "2026-08-16T19:54:38Z"
+    "updatedAt": "2026-08-23T15:02:19Z"
   },
   {
     "createdAt": "2026-08-07T10:11:25Z",
@@ -297,7 +322,7 @@
       "sso",
       "user-attributes"
     ],
-    "updatedAt": "2026-08-16T15:34:59Z"
+    "updatedAt": "2026-08-23T14:45:56Z"
   },
   {
     "createdAt": "2026-01-30T04:05:58Z",
@@ -348,6 +373,6 @@
       "uid2",
       "user-identification"
     ],
-    "updatedAt": "2026-08-16T13:28:26Z"
+    "updatedAt": "2026-08-30T10:30:46Z"
   }
 ]
