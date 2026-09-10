@@ -146,8 +146,9 @@ components:
 Portfolio is a calm, editorial personal site for Dean Grant.
 Default presentation is **dark**; visitors can switch to light via `data-theme`.
 The personality is neutral near-black / near-white surfaces, quiet borders, and
-Sora typography — focused on readable copy and a scannable project carousel,
-not a colorful marketing dashboard.
+Sora typography — focused on readable copy and a scannable projects section
+(stacked list under `640px`, carousel from `640px`), not a colorful marketing
+dashboard.
 
 Canonical CSS tokens live in
 [`apps/web/src/styles/global.css`](../../apps/web/src/styles/global.css)
@@ -193,7 +194,8 @@ Roles in use:
   multi-paragraph copy via preserved line breaks (`white-space: pre-line`).
 - **Section label** — small uppercase (`0.8125rem`), weight `600`, muted, wide
   tracking.
-- **Card title / body** — titles weight `600`; muted clamped descriptions.
+- **Card title / body** — titles weight `600`; muted descriptions (clamped to
+  4 lines in the carousel from `640px`; unclamped in the stacked list).
 - **Control label** — small uppercase (`0.75rem`), weight `600`.
 
 Do not add a second display or mono stack unless content needs it.
@@ -203,17 +205,34 @@ Do not add a second display or mono stack unless content needs it.
 Content sits in a centered column capped by `--max-width` (`72rem`).
 Spacing uses `--space-1` … `--space-8` (`0.25rem` … `4.5rem`).
 
+Shared layout breakpoints (CSS media queries use these literals; TS uses
+[`layout.constants.ts`](../../apps/web/src/constants/layout.constants.ts)):
+
+- **`640px`** — medium: denser phone chrome ends; projects carousel begins;
+  experience returns to a three-column row
+- **`1024px`** — large: three visible project cards; page background uses
+  `background-attachment: fixed` (scroll attachment below this width)
+
+Shell safe-area padding reads `--safe-area-inset-*` tokens from `global.css`
+(aliases of `env(safe-area-inset-*, 0px)`). Those insets require
+`viewport-fit=cover` on the viewport meta (set in `apps/web/index.html`).
+
+`min-height: 100dvh` (with `100vh` fallback) is preferred over `100vh` alone so
+mobile browser chrome is less likely to clip content; dynamic viewport height
+may reflow slightly when chrome shows or hides.
+
 Home is a vertical stack of sections (hero → social → projects → footer).
 Writing (`ArticlesSection`) remains in the codebase but is intentionally not
 mounted until that content is ready to release.
 
 Under `640px`, the page uses denser spacing (tighter section gaps, shell
-padding, hero gap, and social link padding) and `env(safe-area-inset-*)` on the
-shell. From `640px` up, desktop spacing matches the previous layout.
+padding, hero gap, and social link padding). From `640px` up, desktop spacing
+matches the previous layout.
 
 Projects:
 
-- Under `640px`: vertical stacked list; carousel prev/next controls are hidden
+- Under `640px`: vertical stacked list; carousel prev/next controls are omitted
+  from the DOM
 - From `640px`: horizontal carousel with 2 visible cards
 - From `1024px`: 3 visible cards
 - On the carousel, navigation advances one card at a time and clamps to a
@@ -246,11 +265,12 @@ Map new UI to existing patterns:
 
 - **ThemeToggle** — pill icon button; border + hover wash; presentational.
 - **ProjectCard** — bordered surface, title/description/topics; topic chips are
-  muted pills; overflow count when topics wrap.
+  muted pills; overflow count when topics wrap; description unclamped in the
+  stacked list, line-clamped in the carousel.
 - **ProjectsSection** — section label with a small count badge (filtered list
   length); pill sort group (Created / Updated); single-select language filter
   pills derived from GitHub languages present on the loaded projects (plus All);
-  under `640px` a vertical project list without prev/next; from `640px` a
+  under `640px` a vertical project list with prev/next omitted; from `640px` a
   horizontal carousel with circular prev/next and full-last-page clamp.
 - **SocialLinks** — inline icon + label row; inherit link color; muted on hover.
 - **Articles** — list-row pattern with muted metadata remains for a future

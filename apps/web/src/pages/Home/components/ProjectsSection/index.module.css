@@ -61,6 +61,7 @@
 }
 
 .sortButton {
+  min-height: 2.75rem;
   padding: 0.4rem 0.75rem;
   color: var(--color-muted);
   font-size: 0.75rem;
@@ -92,6 +93,7 @@
 }
 
 .filterButton {
+  min-height: 2.75rem;
   padding: 0.35rem 0.75rem;
   border: 1px solid var(--color-border);
   border-radius: 999px;
@@ -118,7 +120,7 @@
 }
 
 .controls {
-  display: none;
+  display: flex;
   gap: var(--space-2);
 }
 
@@ -188,8 +190,12 @@
     width: auto;
   }
 
-  .controls {
-    display: flex;
+  .sortButton {
+    min-height: 0;
+  }
+
+  .filterButton {
+    min-height: 0;
   }
 
   .track {

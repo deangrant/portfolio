@@ -18,6 +18,10 @@
   --space-7: 3rem;
   --space-8: 4.5rem;
   --radius: 0.5rem;
+  --safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --safe-area-inset-right: env(safe-area-inset-right, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px);
   --transition-theme:
     color 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
@@ -140,7 +144,7 @@ button {
   }
 }
 
-@media (min-width: 640px) {
+@media (min-width: 1024px) {
   body {
     background-attachment: fixed;
   }

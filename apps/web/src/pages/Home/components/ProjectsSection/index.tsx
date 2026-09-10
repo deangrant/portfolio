@@ -12,7 +12,9 @@ import { useProjectCarousel } from "./useProjectCarousel";
 const TRACK_ID = "selected-projects-track";
 
 /**
- * Renders the selected GitHub projects as a horizontal carousel.
+ * Renders selected GitHub projects as a stacked list under `640px`, and as a
+ * horizontal carousel with prev/next controls from `640px` up. Carousel nav
+ * is omitted from the DOM on small viewports.
  */
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [sortKey, setSortKey] = useState<ProjectSortKey>("created");
@@ -30,8 +32,13 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     return sortProjects(filtered, sortKey);
   }, [projects, selectedTechStack, sortKey]);
 
-  const { canScrollNext, canScrollPrev, scrollBySlide, trackRef } =
-    useProjectCarousel(visibleProjects);
+  const {
+    canScrollNext,
+    canScrollPrev,
+    isCarouselViewport,
+    scrollBySlide,
+    trackRef,
+  } = useProjectCarousel(visibleProjects);
 
   return (
     <section aria-labelledby="projects-heading" className={styles.section}>
@@ -73,50 +80,52 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               Updated
             </button>
           </fieldset>
-          <div className={styles.controls}>
-            <button
-              aria-controls={TRACK_ID}
-              aria-label="Previous projects"
-              className={styles.navButton}
-              disabled={!canScrollPrev}
-              onClick={() => {
-                scrollBySlide(-1);
-              }}
-              type="button"
-            >
-              <svg
-                aria-hidden="true"
-                className={styles.navIcon}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                viewBox="0 0 24 24"
+          {isCarouselViewport ? (
+            <div className={styles.controls}>
+              <button
+                aria-controls={TRACK_ID}
+                aria-label="Previous projects"
+                className={styles.navButton}
+                disabled={!canScrollPrev}
+                onClick={() => {
+                  scrollBySlide(-1);
+                }}
+                type="button"
               >
-                <path d="M15 6 9 12l6 6" />
-              </svg>
-            </button>
-            <button
-              aria-controls={TRACK_ID}
-              aria-label="Next projects"
-              className={styles.navButton}
-              disabled={!canScrollNext}
-              onClick={() => {
-                scrollBySlide(1);
-              }}
-              type="button"
-            >
-              <svg
-                aria-hidden="true"
-                className={styles.navIcon}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                viewBox="0 0 24 24"
+                <svg
+                  aria-hidden="true"
+                  className={styles.navIcon}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M15 6 9 12l6 6" />
+                </svg>
+              </button>
+              <button
+                aria-controls={TRACK_ID}
+                aria-label="Next projects"
+                className={styles.navButton}
+                disabled={!canScrollNext}
+                onClick={() => {
+                  scrollBySlide(1);
+                }}
+                type="button"
               >
-                <path d="m9 6 6 6-6 6" />
-              </svg>
-            </button>
-          </div>
+                <svg
+                  aria-hidden="true"
+                  className={styles.navIcon}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="m9 6 6 6-6 6" />
+                </svg>
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
       {availableTechStacks.length > 0 ? (
