@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: var(--space-3);
   width: 100%;
-  height: auto;
+  height: 100%;
   min-height: 0;
   padding: var(--space-5);
   border: 1px solid var(--color-border);
@@ -23,6 +23,10 @@
 .description {
   flex: 1;
   min-height: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
   color: var(--color-muted);
   font-size: 0.9375rem;
 }
@@ -86,17 +90,4 @@
 .link:hover {
   border-bottom-color: var(--color-fg);
   color: var(--color-fg);
-}
-
-@media (min-width: 640px) {
-  .card {
-    height: 100%;
-  }
-
-  .description {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    overflow: hidden;
-  }
 }

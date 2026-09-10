@@ -146,9 +146,9 @@ components:
 Portfolio is a calm, editorial personal site for Dean Grant.
 Default presentation is **dark**; visitors can switch to light via `data-theme`.
 The personality is neutral near-black / near-white surfaces, quiet borders, and
-Sora typography — focused on readable copy and a scannable projects section
-(stacked list under `640px`, carousel from `640px`), not a colorful marketing
-dashboard.
+Sora typography — focused on readable copy and a scannable project carousel
+(one card under `640px`, two from `640px`, three from `1024px`), not a colorful
+marketing dashboard.
 
 Canonical CSS tokens live in
 [`apps/web/src/styles/global.css`](../../apps/web/src/styles/global.css)
@@ -194,8 +194,8 @@ Roles in use:
   multi-paragraph copy via preserved line breaks (`white-space: pre-line`).
 - **Section label** — small uppercase (`0.8125rem`), weight `600`, muted, wide
   tracking.
-- **Card title / body** — titles weight `600`; muted descriptions (clamped to
-  4 lines in the carousel from `640px`; unclamped in the stacked list).
+- **Card title / body** — titles weight `600`; muted descriptions clamped to
+  4 lines inside the carousel track.
 - **Control label** — small uppercase (`0.75rem`), weight `600`.
 
 Do not add a second display or mono stack unless content needs it.
@@ -205,13 +205,15 @@ Do not add a second display or mono stack unless content needs it.
 Content sits in a centered column capped by `--max-width` (`72rem`).
 Spacing uses `--space-1` … `--space-8` (`0.25rem` … `4.5rem`).
 
-Shared layout breakpoints (CSS media queries use these literals; TS uses
-[`layout.constants.ts`](../../apps/web/src/constants/layout.constants.ts)):
+Shared layout breakpoints (CSS media queries use these literals and must stay
+aligned with [`layout.constants.ts`](../../apps/web/src/constants/layout.constants.ts)
+`LAYOUT_MD_MIN_PX` / `LAYOUT_LG_MIN_PX`; there is no PostCSS custom-media bridge):
 
-- **`640px`** — medium: denser phone chrome ends; projects carousel begins;
-  experience returns to a three-column row
-- **`1024px`** — large: three visible project cards; page background uses
-  `background-attachment: fixed` (scroll attachment below this width)
+- **`640px`** (`LAYOUT_MD_MIN_PX`) — medium: denser phone chrome ends; projects
+  show 2 visible cards; experience returns to a three-column row
+- **`1024px`** (`LAYOUT_LG_MIN_PX`) — large: three visible project cards; page
+  background uses `background-attachment: fixed` (scroll attachment below this
+  width)
 
 Shell safe-area padding reads `--safe-area-inset-*` tokens from `global.css`
 (aliases of `env(safe-area-inset-*, 0px)`). Those insets require
@@ -231,8 +233,7 @@ matches the previous layout.
 
 Projects:
 
-- Under `640px`: vertical stacked list; carousel prev/next controls are omitted
-  from the DOM
+- Under `640px`: horizontal carousel with 1 visible card and prev/next controls
 - From `640px`: horizontal carousel with 2 visible cards
 - From `1024px`: 3 visible cards
 - On the carousel, navigation advances one card at a time and clamps to a
@@ -265,13 +266,13 @@ Map new UI to existing patterns:
 
 - **ThemeToggle** — pill icon button; border + hover wash; presentational.
 - **ProjectCard** — bordered surface, title/description/topics; topic chips are
-  muted pills; overflow count when topics wrap; description unclamped in the
-  stacked list, line-clamped in the carousel.
+  muted pills; overflow count when topics wrap; description line-clamped in the
+  carousel track.
 - **ProjectsSection** — section label with a small count badge (filtered list
   length); pill sort group (Created / Updated); single-select language filter
   pills derived from GitHub languages present on the loaded projects (plus All);
-  under `640px` a vertical project list with prev/next omitted; from `640px` a
-  horizontal carousel with circular prev/next and full-last-page clamp.
+  horizontal carousel with circular prev/next and full-last-page clamp (1 / 2 /
+  3 visible cards by breakpoint).
 - **SocialLinks** — inline icon + label row; inherit link color; muted on hover.
 - **Articles** — list-row pattern with muted metadata remains for a future
   Writing release; not currently shown on the home page.

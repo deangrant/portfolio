@@ -5,6 +5,7 @@
 export const LAYOUT_MD_MIN_PX = 640;
 
 /**
- * `matchMedia` query for the medium layout breakpoint.
+ * Minimum viewport width (px) for the large layout breakpoint.
+ * Keep in sync with `@media (min-width: 1024px)` in CSS modules.
  */
-export const LAYOUT_MD_MEDIA_QUERY = `(min-width: ${LAYOUT_MD_MIN_PX}px)`;
+export const LAYOUT_LG_MIN_PX = 1024;

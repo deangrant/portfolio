@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { LAYOUT_MD_MEDIA_QUERY } from "@/constants/layout.constants";
 
 /**
  * Returns the pixel width of one carousel slide, including its trailing gap.
@@ -22,6 +21,8 @@ function getSlideStep(track: HTMLElement): number {
 
 /**
  * Reads how many slides fit in the track from the CSS custom property.
+ * Falls back to `1` when the property is missing or invalid, matching the
+ * base `.track` default of `--carousel-visible: 1`.
  * @param track Scrollable carousel track element.
  */
 function getVisibleCount(track: HTMLElement): number {
@@ -65,43 +66,13 @@ function clampStartIndex(track: HTMLElement, startIndex: number): number {
 }
 
 /**
- * Tracks whether the viewport is wide enough for the projects carousel.
- */
-function useCarouselViewport(): boolean {
-  const [isCarouselViewport, setIsCarouselViewport] = useState(() =>
-    typeof window === "undefined"
-      ? false
-      : window.matchMedia(LAYOUT_MD_MEDIA_QUERY).matches,
-  );
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(LAYOUT_MD_MEDIA_QUERY);
-    const syncViewport = () => {
-      setIsCarouselViewport(mediaQuery.matches);
-    };
-
-    syncViewport();
-    mediaQuery.addEventListener("change", syncViewport);
-
-    return () => {
-      mediaQuery.removeEventListener("change", syncViewport);
-    };
-  }, []);
-
-  return isCarouselViewport;
-}
-
-/**
- * Manages horizontal carousel scroll state and one-slide navigation from
- * `640px` up. Under that breakpoint the track is a stacked list, so listeners
- * and horizontal scroll are skipped. Exposes `isCarouselViewport` so nav
- * controls can be omitted from the DOM on small screens.
+ * Manages horizontal carousel scroll state and one-slide navigation. Visible
+ * card count (1 / 2 / 3) comes from CSS `--carousel-visible`.
  * @param resetKey Value that resets scroll position when it changes.
  */
 export function useProjectCarousel(resetKey: unknown) {
   const trackRef = useRef<HTMLUListElement>(null);
   const startIndexRef = useRef(0);
-  const isCarouselViewport = useCarouselViewport();
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
 
@@ -116,10 +87,6 @@ export function useProjectCarousel(resetKey: unknown) {
 
   const scrollToStartIndex = useCallback(
     (startIndex: number, behavior: ScrollBehavior) => {
-      if (!isCarouselViewport) {
-        return;
-      }
-
       const track = trackRef.current;
 
       if (track === null) {
@@ -138,7 +105,7 @@ export function useProjectCarousel(resetKey: unknown) {
       syncButtonState(nextIndex, maxStartIndex);
       track.scrollTo({ behavior, left: nextIndex * step });
     },
-    [isCarouselViewport, syncButtonState],
+    [syncButtonState],
   );
 
   const settleToNearestPage = useCallback(() => {
@@ -152,13 +119,6 @@ export function useProjectCarousel(resetKey: unknown) {
   }, [scrollToStartIndex]);
 
   useEffect(() => {
-    if (!isCarouselViewport) {
-      startIndexRef.current = 0;
-      setCanScrollPrev(false);
-      setCanScrollNext(false);
-      return;
-    }
-
     const track = trackRef.current;
 
     if (track === null) {
@@ -195,7 +155,7 @@ export function useProjectCarousel(resetKey: unknown) {
       track.removeEventListener("scrollend", settleToNearestPage);
       observer.disconnect();
     };
-  }, [isCarouselViewport, resetKey, scrollToStartIndex, settleToNearestPage]);
+  }, [resetKey, scrollToStartIndex, settleToNearestPage]);
 
   const scrollBySlide = useCallback(
     (direction: -1 | 1) => {
@@ -207,7 +167,6 @@ export function useProjectCarousel(resetKey: unknown) {
   return {
     canScrollNext,
     canScrollPrev,
-    isCarouselViewport,
     scrollBySlide,
     trackRef,
   };
