@@ -39,7 +39,7 @@
 
 @media (min-width: 640px) {
   .link {
-    min-height: 0;
+    min-height: unset;
     padding: 0.55rem 0.8rem;
   }
 }

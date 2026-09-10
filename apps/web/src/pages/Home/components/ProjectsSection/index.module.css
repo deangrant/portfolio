@@ -203,11 +203,11 @@
   }
 
   .sortButton {
-    min-height: 0;
+    min-height: unset;
   }
 
   .filterButton {
-    min-height: 0;
+    min-height: unset;
   }
 
   .track {

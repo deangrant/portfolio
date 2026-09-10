@@ -21,6 +21,8 @@ function getSlideStep(track: HTMLElement): number {
 
 /**
  * Reads how many slides fit in the track from the CSS custom property.
+ * Falls back to `1` when the property is missing or invalid, matching the
+ * base `.track` default of `--carousel-visible: 1`.
  * @param track Scrollable carousel track element.
  */
 function getVisibleCount(track: HTMLElement): number {
