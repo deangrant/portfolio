@@ -50,32 +50,32 @@ jobs:
       - name: Validate lockfile
         run: pnpm lint:lockfile
 
-react-doctor:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-      issues: write
-      statuses: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-        with:
-          fetch-depth: 0
-          persist-credentials: false
+  react-doctor:
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        pull-requests: write
+        issues: write
+        statuses: write
+      steps:
+        - name: Checkout
+          uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+          with:
+            fetch-depth: 0
+            persist-credentials: false
 
-      - name: Resolve React Doctor version
-        id: react-doctor-version
-        run: |
-          version="$(sed -n 's/^[[:space:]]*react-doctor:[[:space:]]*//p' pnpm-workspace.yaml)"
-          if [ -z "$version" ]; then
-            echo "react-doctor version not found in pnpm-workspace.yaml catalog" >&2
-            exit 1
-          fi
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+        - name: Resolve React Doctor version
+          id: react-doctor-version
+          run: |
+            version="$(sed -n 's/^[[:space:]]*react-doctor:[[:space:]]*//p' pnpm-workspace.yaml)"
+            if [ -z "$version" ]; then
+              echo "react-doctor version not found in pnpm-workspace.yaml catalog" >&2
+              exit 1
+            fi
+            echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Run React Doctor
-        uses: millionco/react-doctor@01820bb4fd4d0a4aebcd8df2b2a143a098649cb2
-        with:
-          version: ${{ steps.react-doctor-version.outputs.version }}
-          blocking: error
+        - name: Run React Doctor
+          uses: millionco/react-doctor@01820bb4fd4d0a4aebcd8df2b2a143a098649cb2
+          with:
+            version: ${{ steps.react-doctor-version.outputs.version }}
+            blocking: error
