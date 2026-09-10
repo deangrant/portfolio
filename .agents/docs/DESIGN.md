@@ -205,13 +205,15 @@ Do not add a second display or mono stack unless content needs it.
 Content sits in a centered column capped by `--max-width` (`72rem`).
 Spacing uses `--space-1` … `--space-8` (`0.25rem` … `4.5rem`).
 
-Shared layout breakpoints (CSS media queries use these literals; TS uses
-[`layout.constants.ts`](../../apps/web/src/constants/layout.constants.ts)):
+Shared layout breakpoints (CSS media queries use these literals and must stay
+aligned with [`layout.constants.ts`](../../apps/web/src/constants/layout.constants.ts)
+`LAYOUT_MD_MIN_PX` / `LAYOUT_LG_MIN_PX`; there is no PostCSS custom-media bridge):
 
-- **`640px`** — medium: denser phone chrome ends; projects show 2 visible cards;
-  experience returns to a three-column row
-- **`1024px`** — large: three visible project cards; page background uses
-  `background-attachment: fixed` (scroll attachment below this width)
+- **`640px`** (`LAYOUT_MD_MIN_PX`) — medium: denser phone chrome ends; projects
+  show 2 visible cards; experience returns to a three-column row
+- **`1024px`** (`LAYOUT_LG_MIN_PX`) — large: three visible project cards; page
+  background uses `background-attachment: fixed` (scroll attachment below this
+  width)
 
 Shell safe-area padding reads `--safe-area-inset-*` tokens from `global.css`
 (aliases of `env(safe-area-inset-*, 0px)`). Those insets require
