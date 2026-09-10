@@ -188,9 +188,9 @@ Roles in use:
 
 - **Body** — `1rem` / `1.45` line-height on `body`.
 - **Name (hero)** — `clamp(2.25rem, 6vw, 3rem)`, weight `600`, tracking `-0.03em`.
-- **Tagline** — `1rem`, muted, line-height `1.5`; full content width (same
-  column as the name, no max-width); multi-paragraph copy via preserved line
-  breaks (`white-space: pre-line`).
+- **Tagline** — `1rem` from `640px` (muted, line-height `1.5`); `0.9375rem`
+  under `640px`; full content width (same column as the name, no max-width);
+  multi-paragraph copy via preserved line breaks (`white-space: pre-line`).
 - **Section label** — small uppercase (`0.8125rem`), weight `600`, muted, wide
   tracking.
 - **Card title / body** — titles weight `600`; muted clamped descriptions.
@@ -207,14 +207,18 @@ Home is a vertical stack of sections (hero → social → projects → footer).
 Writing (`ArticlesSection`) remains in the codebase but is intentionally not
 mounted until that content is ready to release.
 
-Projects use a horizontal carousel:
+Under `640px`, the page uses denser spacing (tighter section gaps, shell
+padding, hero gap, and social link padding) and `env(safe-area-inset-*)` on the
+shell. From `640px` up, desktop spacing matches the previous layout.
 
-- 1 visible card by default
-- 2 from `640px`
-- 3 from `1024px`
-- Navigation advances one card at a time and clamps to a **full last page** of
-  visible cards (so the final view still fills the track); Next disables at
-  that end.
+Projects:
+
+- Under `640px`: vertical stacked list; carousel prev/next controls are hidden
+- From `640px`: horizontal carousel with 2 visible cards
+- From `1024px`: 3 visible cards
+- On the carousel, navigation advances one card at a time and clamps to a
+  **full last page** of visible cards (so the final view still fills the
+  track); Next disables at that end
 
 Prefer existing space tokens over one-off margins.
 
@@ -246,7 +250,8 @@ Map new UI to existing patterns:
 - **ProjectsSection** — section label with a small count badge (filtered list
   length); pill sort group (Created / Updated); single-select language filter
   pills derived from GitHub languages present on the loaded projects (plus All);
-  circular prev/next nav with full-last-page clamp.
+  under `640px` a vertical project list without prev/next; from `640px` a
+  horizontal carousel with circular prev/next and full-last-page clamp.
 - **SocialLinks** — inline icon + label row; inherit link color; muted on hover.
 - **Articles** — list-row pattern with muted metadata remains for a future
   Writing release; not currently shown on the home page.

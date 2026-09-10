@@ -66,13 +66,20 @@ body {
       color-mix(in srgb, var(--color-muted) 12%, transparent),
       transparent 50%
     );
-  background-attachment: fixed;
+  background-attachment: scroll;
   -webkit-font-smoothing: antialiased;
   transition: var(--transition-theme);
 }
 
 #root {
   min-height: 100vh;
+}
+
+@supports (height: 100dvh) {
+  body,
+  #root {
+    min-height: 100dvh;
+  }
 }
 
 a {
@@ -130,5 +137,11 @@ button {
       opacity: 1;
       transform: none;
     }
+  }
+}
+
+@media (min-width: 640px) {
+  body {
+    background-attachment: fixed;
   }
 }
