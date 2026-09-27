@@ -11,7 +11,7 @@ catalog:
   "@types/react-dom": 19.2.5
   "@vitejs/plugin-react": 6.1.1
   react: 19.2.8
-  react-doctor: 0.9.12
+  react-doctor: 0.9.13
   react-dom: 19.2.8
   typescript: 7.0.2
   vite: 8.2.2
