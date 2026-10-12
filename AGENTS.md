@@ -4,7 +4,7 @@ Dean Grant’s portfolio monorepo. Prefer this file, then [`.agents/`](.agents/)
 
 ## Stack
 
-- Node.js `>=22`, pnpm `11.8.0` (Corepack / `packageManager` pin)
+- Node.js `>=22`, pnpm `12.5.1` (Corepack / `packageManager` pin)
 - Biome for format + lint
 - React Doctor for React diagnostics
 - App: Vite + React 19 + TypeScript in [`apps/web`](apps/web)

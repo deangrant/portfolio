@@ -19,7 +19,7 @@ at runtime.
 ## Requirements
 
 - Node.js `>=22`
-- [pnpm](https://pnpm.io/) `11.8.0` (pinned via `packageManager` in `package.json`)
+- [pnpm](https://pnpm.io/) `12.5.1` (pinned via `packageManager` in `package.json`)
 
 ```bash
 corepack enable
