@@ -6,7 +6,7 @@ alwaysApply: true
 # pnpm workspace
 
 - Use **pnpm only** (Corepack). Never npm or yarn.
-- Respect `packageManager` (`pnpm@11.8.0`) and `engines.node` (`>=22`).
+- Respect `packageManager` (`pnpm@12.5.1`) and `engines.node` (`>=22`).
 - Prefer `catalog:` versions from `pnpm-workspace.yaml` for shared deps.
 - Install with frozen lockfile in CI (`pnpm install --frozen-lockfile` / `pnpm lint:lockfile`).
 - Do not weaken install policy (`allowBuilds`, `trustPolicyExclude`, etc.) without an explicit reason and review.

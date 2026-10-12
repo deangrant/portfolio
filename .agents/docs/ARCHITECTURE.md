@@ -31,7 +31,7 @@ The browser loads a Vite-built React app from [`apps/web`](../../apps/web).
 Node fetch scripts run at `predev` / `prebuild` (and in CI lint) to refresh generated JSON under `src/assets/data/`.
 The SPA reads that JSON at build/bundle time; it does not call GitHub or Substack from the client.
 
-Stack: Node `>=22`, pnpm `11.8`, React 19, Vite, TypeScript, Biome, React Doctor.
+Stack: Node `>=22`, pnpm `12.5`, React 19, Vite, TypeScript, Biome, React Doctor.
 
 ```mermaid
 flowchart LR
