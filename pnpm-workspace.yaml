@@ -24,7 +24,7 @@ blockExoticSubdeps: true
 
 # Shared dependency versions referenced by packages via `catalog:`.
 catalog:
-  "@biomejs/biome": 2.5.14
+  "@biomejs/biome": 2.5.15
   "@fontsource/sora": 5.3.0
   "@types/react": 19.3.0
   "@types/react-dom": 19.3.0
