@@ -33,7 +33,7 @@ catalog:
   react-doctor: 0.9.14
   react-dom: 19.3.0
   typescript: 7.0.2
-  vite: 8.3.1
+  vite: 8.3.2
 
 # Fail install when the current Node/pnpm version is outside package.json
 # engines. Documents intent; without this, engines is advisory only.
