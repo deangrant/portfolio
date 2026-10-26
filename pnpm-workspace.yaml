@@ -24,7 +24,7 @@ blockExoticSubdeps: true
 
 # Shared dependency versions referenced by packages via `catalog:`.
 catalog:
-  "@biomejs/biome": 2.5.14
+  "@biomejs/biome": 2.5.15
   "@fontsource/sora": 5.3.0
   "@types/react": 19.3.0
   "@types/react-dom": 19.3.0
@@ -33,7 +33,7 @@ catalog:
   react-doctor: 0.9.14
   react-dom: 19.3.0
   typescript: 7.0.2
-  vite: 8.3.1
+  vite: 8.3.3
 
 # Fail install when the current Node/pnpm version is outside package.json
 # engines. Documents intent; without this, engines is advisory only.
@@ -45,7 +45,9 @@ minimumReleaseAge: 30240
 
 # Exclude packages from the minimum release age policy.
 minimumReleaseAgeExclude:
-  - source-map-js@1.2.2 # CVE-2026-93749, fixed in 1.2.2 (2026-09-30T14:08:09.382Z).
+  - fast-uri@3.1.9 # CVE-2026-110306, fixed in 3.1.9 (2026-10-19T23:05:26.357Z).
+  - vite@8.3.3 # CVE-2026-112942, fixed in 8.3.3 (2026-10-06T04:10:19.326Z).
+  - zod@4.6.6 # CVE-2023-54404, fixed in 4.6.6 (2026-10-11T16:18:23.878Z).
 
 # Fail resolution instead of falling back to a version younger than
 # minimumReleaseAge. Frozen-lockfile installs are also checked against this
