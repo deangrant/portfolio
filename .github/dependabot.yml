@@ -11,6 +11,10 @@ updates:
       - dependabot
       - ecosystem:github-actions
     open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: npm
     directory: "/"
@@ -24,9 +28,6 @@ updates:
       - ecosystem:npm
     open-pull-requests-limit: 25
     groups:
-      react:
+      npm:
         patterns:
-          - "react"
-          - "react-dom"
-          - "@types/react"
-          - "@types/react-dom"
+          - "*"
