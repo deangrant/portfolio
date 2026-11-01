@@ -8,10 +8,6 @@ allowBuilds:
 # remove entries once a patched release is available.
 audit:
   ignore:
-    # braces <=3.0.3 is currently unfixable because no patched release exists.
-    # The dependency is transitive and is not exposed to untrusted brace
-    # patterns in our application.
-    - GHSA-vfj7-8cjw-p6xm
 
 # Minimum advisory severity `pnpm audit` reports. `low` = every advisory, which
 # matches the CI Dependency Audit step (bare `pnpm audit`).
@@ -45,8 +41,9 @@ minimumReleaseAge: 30240
 
 # Exclude packages from the minimum release age policy.
 minimumReleaseAgeExclude:
+  - "@isaacs/nonrecursive-glob-match@1.0.1" # Required by minimatch@11.0.1 as transitive dependency (2026-10-27T04:24:52.559Z).
   - fast-uri@3.1.9 # CVE-2026-110306, fixed in 3.1.9 (2026-10-19T23:05:26.357Z).
-  - vite@8.3.3 # CVE-2026-112942, fixed in 8.3.3 (2026-10-06T04:10:19.326Z).
+  - minimatch@11.0.1 # CVE-2026-118764, fixed in 11.0.1 (2026-10-27T22:26:03.755Z).
   - zod@4.6.6 # CVE-2023-54404, fixed in 4.6.6 (2026-10-11T16:18:23.878Z).
 
 # Fail resolution instead of falling back to a version younger than
@@ -59,6 +56,8 @@ minimumReleaseAgeStrict: true
 # Force-replace transitive versions across the dependency graph to avoid
 # supply-chain downgrades.
 overrides:
+  "@eslint/config-array>minimatch": 11.0.1 # CVE-2026-118764, fixed in 11.0.1.
+  "eslint>minimatch": 11.0.1 # CVE-2026-118764, fixed in 11.0.1.
 
 # Workspace package locations; globs matching directories that contain a
 # package.json.
